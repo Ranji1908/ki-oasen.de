@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KI-Oasen Demo – Musterstadt</title>
+<meta name="description" content="Interaktive Demo der KI-Oasen-Bürgerbeteiligung: Perspektive wählen, Wunsch eingeben, Zukunftsbild sehen.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .demo-bar { background: var(--accent); color: #fff; font-size: .88rem; text-align: center; padding: 8px 16px; }
+  .demo-head { padding: 40px 0 8px; }
+  .demo-head h1 { font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: .2em; }
+  .demo-head p { color: var(--muted); margin: 0; }
+  .tabs { display: flex; gap: 6px; margin: 28px 0 0; border-bottom: 1px solid var(--line); }
+  .tab { background: none; border: 0; font: inherit; font-weight: 600; color: var(--muted); padding: 12px 18px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+  .tab[aria-selected="true"] { color: var(--green); border-bottom-color: var(--green); }
+  .panel { padding: 32px 0 90px; }
+  .panel[hidden] { display: none; }
+
+  .steps { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+  .steps span { font-size: .85rem; font-weight: 600; padding: .45em 1em; border-radius: 999px; background: var(--sand); color: var(--muted); }
+  .steps span.active { background: var(--green); color: #fff; }
+  .steps span.done { background: var(--sand-2); color: var(--green); }
+
+  .box { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; }
+  .box h2 { font-size: 1.7rem; max-width: none; }
+  .q { margin-bottom: 24px; }
+  .q > p { font-weight: 600; margin-bottom: .6em; }
+  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice { font: inherit; font-size: .95rem; background: var(--paper); border: 1.5px solid var(--line); border-radius: 999px; padding: .55em 1.1em; cursor: pointer; color: var(--ink); }
+  .choice:hover { border-color: var(--leaf); }
+  .choice[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+  .actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .btn[disabled] { opacity: .4; pointer-events: none; }
+  button.btn { cursor: pointer; font-family: inherit; }
+
+  .persp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .persp button { border: 3px solid transparent; border-radius: 14px; padding: 0; overflow: hidden; cursor: pointer; background: none; text-align: left; font: inherit; }
+  .persp button[aria-pressed="true"] { border-color: var(--green); }
+  .persp button svg { width: 100%; height: auto; }
+  .persp button span { display: block; padding: 10px 12px; font-weight: 600; font-size: .92rem; background: var(--paper); }
+
+  textarea { width: 100%; min-height: 120px; font: inherit; font-size: 1.05rem; padding: 16px; border: 1.5px solid var(--line); border-radius: 14px; resize: vertical; background: var(--paper); }
+  textarea:focus { outline: none; border-color: var(--green); }
+  .hint { font-size: .88rem; color: var(--muted); margin-top: 14px; }
+  .suggest { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .suggest button { font: inherit; font-size: .85rem; border: 1px dashed var(--leaf); background: none; color: var(--green); border-radius: 999px; padding: .3em .8em; cursor: pointer; }
+
+  .loading { text-align: center; padding: 60px 20px; }
+  .spinner { width: 64px; height: 64px; margin: 0 auto 24px; border-radius: 50%; border: 5px solid var(--sand); border-top-color: var(--green); animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .progress { height: 8px; background: var(--sand); border-radius: 99px; overflow: hidden; max-width: 380px; margin: 18px auto 0; }
+  .progress div { height: 100%; width: 0; background: var(--leaf); transition: width .3s; }
+  .loading-msg { color: var(--muted); min-height: 1.6em; }
+
+  .result-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 28px; align-items: start; }
+  .feat-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 18px; }
+  .feat-list span { background: var(--sand); color: var(--green-deep); font-size: .85rem; font-weight: 600; padding: .3em .8em; border-radius: 999px; }
+  .wish-quote { font-family: var(--serif); font-size: 1.2rem; line-height: 1.4; margin: 0 0 1rem; }
+
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+  .g-item { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .g-item svg { width: 100%; height: auto; }
+  .g-item p { margin: 0; padding: 12px 14px; font-size: .9rem; color: var(--muted); }
+  .g-item.mine { border: 2px solid var(--accent); }
+  .g-item small { display: block; font-size: .75rem; color: var(--accent); font-weight: 600; margin-bottom: 2px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .kpi strong { display: block; font-family: var(--serif); font-size: 2rem; color: var(--green); line-height: 1.1; }
+  .kpi span { font-size: .85rem; color: var(--muted); }
+  .dash { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dash .box { padding: 24px; }
+  .dash h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1em; }
+  .bar { display: grid; grid-template-columns: 130px 1fr 48px; gap: 10px; align-items: center; font-size: .9rem; margin-bottom: 8px; }
+  .bar-track { height: 14px; background: var(--sand); border-radius: 99px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--green); border-radius: 99px; }
+  .bar b { text-align: right; font-weight: 600; color: var(--muted); }
+  .words { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; }
+  .words span { font-family: var(--serif); color: var(--green); }
+
+  @media (max-width: 860px) {
+    .result-grid, .dash { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .box { padding: 20px; }
+    .persp { grid-template-columns: 1fr; }
+    .bar { grid-template-columns: 100px 1fr 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">Demo mit vereinfachten Illustrationen. Im echten Einsatz erzeugt die KI fotorealistische Bilder Ihres Ortes.</div>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="./" class="logo" aria-label="KI-Oasen Startseite">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--green)"/><path d="M16 25v-9" stroke="var(--sand)" stroke-width="2.2" stroke-linecap="round"/><circle cx="16" cy="12" r="6.5" fill="var(--leaf)"/></svg>
+      KI-Oasen
+    </a>
+    <nav class="nav-links"><a href="./">Zur Produktseite</a><a href="./#kontakt" class="btn btn-small">Anfragen</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="demo-head">
+    <p class="eyebrow">Live-Demo · Musterstadt</p>
+    <h1>Was wünschen Sie sich für den Marktplatz?</h1>
+    <p>So erleben Bürgerinnen und Bürger die Beteiligung. Probieren Sie es selbst aus.</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="mitmachen">Bürgeransicht</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="galerie">Galerie</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="auswertung">Auswertung für die Stadt</button>
+  </div>
+
+  <!-- MITMACHEN -->
+  <section class="panel" id="p-mitmachen" role="tabpanel">
+    <div class="steps" id="steps">
+      <span data-s="1">1 · Über Sie</span><span data-s="2">2 · Blickwinkel</span><span data-s="3">3 · Ihr Wunsch</span><span data-s="4">4 · Ihr Bild</span>
+    </div>
+
+    <!-- Schritt 1 -->
+    <div class="box step" data-step="1">
+      <h2>Kurz zu Ihnen</h2>
+      <p class="hint" style="margin-top:0">Anonym. Hilft der Stadt zu verstehen, wer sich was wünscht.</p>
+      <div class="q"><p>Wie alt sind Sie?</p><div class="choices" data-q="alter">
+        <button class="choice">unter 18</button><button class="choice">18–29</button><button class="choice">30–49</button><button class="choice">50–64</button><button class="choice">65+</button></div></div>
+      <div class="q"><p>Was verbindet Sie mit Musterstadt?</p><div class="choices" data-q="bezug">
+        <button class="choice">Ich wohne hier</button><button class="choice">Ich arbeite hier</button><button class="choice">Aus der Region</button><button class="choice">Zu Besuch</button></div></div>
+      <div class="q"><p>Wie oft sind Sie am Marktplatz?</p><div class="choices" data-q="haeufigkeit">
+        <button class="choice">Täglich</button><button class="choice">Wöchentlich</button><button class="choice">Monatlich</button><button class="choice">Selten</button></div></div>
+      <div class="actions"><span></span><button class="btn" id="to2" disabled>Weiter</button></div>
+    </div>
+
+    <!-- Schritt 2 -->
+    <div class="box step" data-step="2" hidden>
+      <h2>Welcher Blickwinkel passt zu Ihrer Idee?</h2>
+      <div class="persp" id="persp"></div>
+      <div class="actions"><button class="btn btn-ghost" data-back="1">Zurück</button><button class="btn" id="to3" disabled>Weiter</button></div>
+    </div>
+
+    <!-- Schritt 3 -->
+    <div class="box step" data-step="3" hidden>
+      <h2>Was soll sich ändern?</h2>
+      <label for="wish" class="hint" style="display:block;margin:0 0 10px">Ein paar Stichpunkte genügen.</label>
+      <textarea id="wish" maxlength="300" placeholder="z. B. mehr Bäume und Schatten, ein Brunnen für Kinder, Bänke zum Sitzen …"></textarea>
+      <p class="hint">Ideen zum Antippen:</p>
+      <div class="suggest" id="suggest"></div>
+      <div class="actions"><button class="btn btn-ghost" data-back="2">Zurück</button><button class="btn" id="generate" disabled>Bild erzeugen ✨</button></div>
+    </div>
+
+    <!-- Schritt 4: Laden -->
+    <div class="box step" data-step="load" hidden>
+      <div class="loading">
+        <div class="spinner"></div>
+        <h2 style="font-size:1.4rem">Die KI zeichnet Ihren Marktplatz</h2>
+        <p class="loading-msg" id="loadmsg">Wunsch wird gelesen …</p>
+        <div class="progress"><div id="bar"></div></div>
+      </div>
+    </div>
+
+    <!-- Schritt 4: Ergebnis -->
+    <div class="box step" data-step="4" hidden>
+      <div class="result-grid">
+        <figure class="compare" style="margin:0">
+          <div class="compare-stage" id="resultStage" style="--pos:50%"></div>
+        </figure>
+        <div>
+          <p class="eyebrow">Ihr Zukunftsbild</p>
+          <p class="wish-quote" id="resultWish"></p>
+          <p class="hint" style="margin:0">Erkannt:</p>
+          <div class="feat-list" id="resultFeats"></div>
+          <p class="hint">Schieben Sie den Regler, um heute und morgen zu vergleichen.</p>
+          <div class="actions" style="justify-content:flex-start">
+            <button class="btn" id="submit">Einreichen</button>
+            <button class="btn btn-ghost" data-back="3">Wunsch anpassen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danke -->
+    <div class="box step" data-step="done" hidden style="text-align:center;padding:56px 24px">
+      <h2>Danke! Ihr Wunsch ist eingegangen.</h2>
+      <p class="hint" style="font-size:1rem">Er erscheint nach kurzer Prüfung in der Galerie und fließt in die Auswertung ein.</p>
+      <div class="actions" style="justify-content:center">
+        <button class="btn" data-goto="galerie">Galerie ansehen</button>
+        <button class="btn btn-ghost" id="again">Noch eine Idee</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIE -->
+  <section class="panel" id="p-galerie" role="tabpanel" hidden>
+    <h2 style="font-size:1.8rem">Was andere sich wünschen</h2>
+    <p class="hint" style="margin:0">Alle Beiträge sind anonym.</p>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <!-- AUSWERTUNG -->
+  <section class="panel" id="p-auswertung" role="tabpanel" hidden>
+    <h2 style="font-size:1.8rem">Auswertung Marktplatz Musterstadt</h2>
+    <p class="hint" style="margin:0 0 24px">So sieht die Verwaltung die Ergebnisse. Beispieldaten plus Ihre Beiträge aus dieser Demo.</p>
+    <div class="kpis" id="kpis"></div>
+    <div class="dash">
+      <div class="box"><h3>Häufigste Themen</h3><div id="themes"></div></div>
+      <div class="box"><h3>Teilnehmende nach Alter</h3><div id="ages"></div></div>
+      <div class="box"><h3>Bezug zum Ort</h3><div id="bezug"></div></div>
+      <div class="box"><h3>Häufige Begriffe</h3><div class="words" id="words"></div></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 KI-Oasen · Demo</span>
+    <nav><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---------- Merkmale & Erkennung ----------
+  var FEATURES = [
+    { id: 'baeume',  label: 'Bäume & Schatten', re: /baum|bäum|grün|gruen|schatten|allee|wald/ },
+    { id: 'wiese',   label: 'Entsiegelung',     re: /wiese|rasen|entsiegel|beet|natur|grünfläche|park/ },
+    { id: 'wasser',  label: 'Wasser',           re: /wasser|brunnen|fontäne|fontaene|bach|teich|kühl/ },
+    { id: 'baenke',  label: 'Sitzgelegenheiten',re: /bank|bänk|sitz|verweil|ausruh|liege/ },
+    { id: 'spiel',   label: 'Spielen',          re: /spiel|kinder|schaukel|rutsch|familie/ },
+    { id: 'markt',   label: 'Markt & Feste',    re: /markt|stand|stände|fest|veranstalt|bühne|konzert/ },
+    { id: 'cafe',    label: 'Café & Gastro',    re: /café|cafe|gastro|restaurant|kaffee|eis|außengastro|biergarten/ },
+    { id: 'blumen',  label: 'Blumen',           re: /blume|blüh|bienen|insekt|bunt/ },
+    { id: 'rad',     label: 'Fahrrad',          re: /rad|fahrrad|bike/ },
+    { id: 'licht',   label: 'Beleuchtung',      re: /licht|lampe|abend|nacht|beleucht|laterne/ }
+  ];
+  function detect(text) {
+    var t = text.toLowerCase();
+    var f = {};
+    FEATURES.forEach(function (x) { if (x.re.test(t)) f[x.id] = true; });
+    if (!Object.keys(f).length) { f.baeume = true; f.baenke = true; }
+    return f;
+  }
+
+  // ---------- Szenen ----------
+  var PERSPECTIVES = [
+    { id: 'rathaus', name: 'Blick zum Rathaus', blds: [[10,80,110,120],[130,60,100,140],[240,30,130,170,'rathaus'],[380,70,100,130],[490,90,110,110]] },
+    { id: 'kirche',  name: 'Blick zur Kirche',  blds: [[0,90,130,110],[140,70,110,130],[260,10,80,190,'turm'],[350,60,120,140],[480,80,120,120]] },
+    { id: 'gasse',   name: 'Blick in die Gasse', blds: [[0,40,170,160],[180,90,80,110],[270,110,60,90],[340,90,80,110],[430,40,170,160]] }
+  ];
+
+  function building(b, after) {
+    var x=b[0], y=b[1], w=b[2], h=b[3], kind=b[4];
+    var wall = after ? '#e9d6b4' : '#b9bec2', win = after ? '#c6a777' : '#9ea4a9', roof = after ? '#b5654a' : '#8b9196';
+    var s = '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+wall+'"/>';
+    s += '<path d="M'+(x-4)+' '+y+' L'+(x+w/2)+' '+(y-(kind==='turm'?60:24))+' L'+(x+w+4)+' '+y+'Z" fill="'+roof+'"/>';
+    if (kind === 'rathaus') s += '<circle cx="'+(x+w/2)+'" cy="'+(y+30)+'" r="13" fill="#fff" stroke="'+win+'" stroke-width="3"/>';
+    var cols = Math.max(2, Math.floor(w/34));
+    for (var r = 0; r < Math.floor((h-30)/42); r++) for (var c = 0; c < cols; c++) {
+      var wx = x + (w/cols)*c + (w/cols)/2 - 8, wy = y + 50 + r*42;
+      if (kind==='turm' && wy < y+40) continue;
+      s += '<rect x="'+wx+'" y="'+wy+'" width="16" height="22" rx="2" fill="'+win+'"/>';
+    }
+    return s;
+  }
+  function tree(x, y, s) {
+    s = s || 1;
+    return '<rect x="'+(x-4*s)+'" y="'+(y-10)+'" width="'+(8*s)+'" height="'+(50*s)+'" fill="#6b4f2c"/>' +
+      '<circle cx="'+x+'" cy="'+(y-24*s)+'" r="'+(40*s)+'" fill="#3f7d3a"/><circle cx="'+(x-18*s)+'" cy="'+(y-8*s)+'" r="'+(24*s)+'" fill="#4f9147"/><circle cx="'+(x+20*s)+'" cy="'+(y-14*s)+'" r="'+(20*s)+'" fill="#5ea255"/>';
+  }
+  function person(x, y, c) { return '<circle cx="'+x+'" cy="'+y+'" r="5" fill="#2f3b2c"/><rect x="'+(x-5)+'" y="'+(y+4)+'" width="10" height="17" rx="4" fill="'+(c||'#2f3b2c')+'"/>'; }
+
+  var uid = 0;
+  function scene(pid, f, after) {
+    var p = PERSPECTIVES.filter(function (x) { return x.id === pid; })[0] || PERSPECTIVES[0];
+    var evening = after && f.licht, gid = 'sky' + (++uid);
+    var s = '<svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+    s += '<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b4a7a"/><stop offset="1" stop-color="#e8a27a"/></linearGradient></defs>';
+    s += '<rect width="600" height="420" fill="' + (after ? (evening ? 'url(#'+gid+')' : '#f3ead8') : '#e7e9ea') + '"/>';
+    p.blds.forEach(function (b) { s += building(b, after); });
+    if (!after) {
+      s += '<path d="M0 200h600v220H0z" fill="#a7adb1"/><g stroke="#959ba0" stroke-width="2"><path d="M0 250h600M0 310h600M0 380h600M100 200 40 420M220 200 190 420M340 200 350 420M460 200 510 420"/></g>';
+      s += '<g fill="#7f868b"><rect x="80" y="262" width="80" height="30" rx="7"/><rect x="250" y="330" width="90" height="34" rx="7"/><rect x="430" y="280" width="80" height="30" rx="7"/></g>';
+      s += '<g fill="#5f666b"><circle cx="98" cy="294" r="7"/><circle cx="142" cy="294" r="7"/><circle cx="270" cy="366" r="7"/><circle cx="320" cy="366" r="7"/><circle cx="448" cy="312" r="7"/><circle cx="492" cy="312" r="7"/></g>';
+      return s + '</svg>';
+    }
+    s += '<path d="M0 200h600v220H0z" fill="' + (f.wiese ? '#bcd8a8' : '#e3d6bd') + '"/>';
+    if (f.wiese) s += '<path d="M0 300 C150 270 250 330 600 290 V330 C320 360 160 310 0 345Z" fill="#e8dcc2"/>';
+    else s += '<g stroke="#d2c3a5" stroke-width="2"><path d="M0 260h600M0 330h600"/></g><ellipse cx="90" cy="400" rx="80" ry="20" fill="#bcd8a8"/><ellipse cx="520" cy="250" rx="70" ry="14" fill="#bcd8a8"/>';
+    if (f.wasser) s += '<ellipse cx="300" cy="372" rx="120" ry="26" fill="#8fc3d6"/><ellipse cx="300" cy="368" rx="92" ry="15" fill="#b6dbe7"/><g stroke="#8fc3d6" stroke-width="3" fill="none"><path d="M280 362 q-8 -30 -16 -4M300 360 q0 -40 0 0M320 362 q8 -30 16 -4"/></g>';
+    if (f.markt) {
+      [[300,232,'#e2725b'],[372,232,'#3f7d3a'],[444,232,'#e2b04a']].forEach(function (m) {
+        s += '<rect x="'+(m[0]+4)+'" y="'+(m[1]+20)+'" width="56" height="30" fill="#fff"/><path d="M'+m[0]+' '+(m[1]+22)+' L'+(m[0]+32)+' '+m[1]+' L'+(m[0]+64)+' '+(m[1]+22)+'Z" fill="'+m[2]+'"/>';
+      });
+    }
+    if (f.licht) [190, 410].forEach(function (x) {
+      s += (evening ? '<circle cx="'+x+'" cy="222" r="26" fill="#ffd97a" opacity=".35"/>' : '') + '<rect x="'+(x-2)+'" y="222" width="4" height="70" fill="#3a3a3a"/><circle cx="'+x+'" cy="222" r="8" fill="'+(evening ? '#ffe6a1' : '#f2f2f2')+'" stroke="#3a3a3a" stroke-width="2"/>';
+    });
+    if (f.baeume) { s += tree(70, 255) + tree(250, 238, .8) + tree(560, 262, .85); if (!f.markt) s += tree(430, 250); }
+    if (f.cafe) [[180,300,'#e2725b'],[240,312,'#f4ecdc']].forEach(function (u) {
+      s += '<rect x="'+(u[0]-2)+'" y="'+u[1]+'" width="4" height="34" fill="#555"/><path d="M'+(u[0]-30)+' '+(u[1]+4)+' Q'+u[0]+' '+(u[1]-22)+' '+(u[0]+30)+' '+(u[1]+4)+'Z" fill="'+u[2]+'" stroke="#c9b28a"/><rect x="'+(u[0]-14)+'" y="'+(u[1]+28)+'" width="28" height="5" fill="#8a6a45"/>';
+    });
+    if (f.blumen) for (var i = 0; i < 26; i++) {
+      var bx = 20 + i*22 + (i%3)*4, by = 405 - (i%2)*8;
+      s += '<circle cx="'+bx+'" cy="'+by+'" r="5" fill="'+['#e2725b','#e2b04a','#c86ab0','#fff'][i%4]+'"/>';
+    }
+    if (f.spiel) s += '<g stroke="#a9784a" stroke-width="5" fill="none"><path d="M110 395 L130 335 L170 335 L190 395"/></g><path d="M150 335 v32" stroke="#555" stroke-width="2"/><rect x="142" y="366" width="18" height="5" fill="#e2725b"/><path d="M460 400 L500 350 h16 v50" fill="none" stroke="#e2b04a" stroke-width="7"/>';
+    if (f.baenke) [[110,330],[420,335],[300,404]].forEach(function (b) {
+      s += '<rect x="'+b[0]+'" y="'+b[1]+'" width="74" height="9" rx="3" fill="#a9784a"/><rect x="'+(b[0]+6)+'" y="'+(b[1]+9)+'" width="5" height="12" fill="#6b4f2c"/><rect x="'+(b[0]+63)+'" y="'+(b[1]+9)+'" width="5" height="12" fill="#6b4f2c"/>';
+    });
+    if (f.rad) [[520,370],[548,370]].forEach(function (r) {
+      s += '<g fill="none" stroke="#2f3b2c" stroke-width="2.5"><circle cx="'+r[0]+'" cy="'+r[1]+'" r="9"/><circle cx="'+(r[0]+22)+'" cy="'+r[1]+'" r="9"/><path d="M'+r[0]+' '+r[1]+' l10 -14 h10 l2 14 M'+(r[0]+10)+' '+(r[1]-14)+' l2 14"/></g>';
+    });
+    s += person(160, 292, '#e2725b') + person(345, 300, '#3f7d3a') + person(470, 310, '#4a6fa5');
+    if (f.spiel) s += person(178, 368, '#e2b04a');
+    return s + '</svg>';
+  }
+
+  // ---------- Beispieldaten ----------
+  var SEED = [
+    { p: 'rathaus', t: 'Viele Bäume, Schatten im Sommer und Bänke zum Ausruhen', a: '65+', b: 'Ich wohne hier' },
+    { p: 'kirche',  t: 'Ein Brunnen, in dem Kinder spielen dürfen', a: '30–49', b: 'Ich wohne hier' },
+    { p: 'gasse',   t: 'Café mit Außengastro und Lichterketten am Abend', a: '18–29', b: 'Aus der Region' },
+    { p: 'rathaus', t: 'Wochenmarkt und Platz für Feste, dazu Fahrradständer', a: '30–49', b: 'Ich arbeite hier' },
+    { p: 'kirche',  t: 'Entsiegeln! Wiese, Blumen für Bienen und Bäume', a: '18–29', b: 'Ich wohne hier' },
+    { p: 'gasse',   t: 'Spielplatz und Wasserspiel für Familien', a: 'unter 18', b: 'Ich wohne hier' }
+  ];
+  // Hochgerechnete Beispielverteilung (fiktiv)
+  var BASE = { n: 1286, themes: { baeume: 812, wasser: 534, baenke: 498, wiese: 421, cafe: 366, spiel: 301, markt: 276, blumen: 214, licht: 162, rad: 118 },
+    ages: { 'unter 18': 96, '18–29': 318, '30–49': 402, '50–64': 287, '65+': 183 },
+    bezug: { 'Ich wohne hier': 774, 'Ich arbeite hier': 198, 'Aus der Region': 221, 'Zu Besuch': 93 } };
+
+  var mine = [];
+  try { mine = JSON.parse(localStorage.getItem('kio-demo') || '[]'); } catch (e) {}
+  function save() { try { localStorage.setItem('kio-demo', JSON.stringify(mine)); } catch (e) {} }
+
+  // ---------- Zustand ----------
+  var initial = true;
+  var state = { answers: {}, persp: null, wish: '' };
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  function show(step) {
+    $$('.step').forEach(function (el) { el.hidden = el.dataset.step !== String(step); });
+    var n = step === 'load' || step === 'done' ? 4 : +step;
+    $$('#steps span').forEach(function (el) {
+      var s = +el.dataset.s;
+      el.className = s === n ? 'active' : (s < n || step === 'done' ? 'done' : '');
+    });
+    if (!initial) $('#p-mitmachen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Schritt 1
+  $$('.choices').forEach(function (group) {
+    group.addEventListener('click', function (e) {
+      var b = e.target.closest('.choice'); if (!b) return;
+      group.querySelectorAll('.choice').forEach(function (c) { c.setAttribute('aria-pressed', c === b); });
+      state.answers[group.dataset.q] = b.textContent;
+      $('#to2').disabled = Object.keys(state.answers).length < 3;
+    });
+  });
+  $('#to2').onclick = function () { show(2); };
+
+  // Schritt 2
+  $('#persp').innerHTML = PERSPECTIVES.map(function (p) {
+    return '<button type="button" data-p="'+p.id+'" aria-pressed="false">'+scene(p.id, {}, false)+'<span>'+p.name+'</span></button>';
+  }).join('');
+  $('#persp').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    $$('#persp button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    state.persp = b.dataset.p; $('#to3').disabled = false;
+  });
+  $('#to3').onclick = function () { show(3); $('#wish').focus(); };
+
+  // Schritt 3
+  ['mehr Bäume', 'Schatten', 'Brunnen', 'Bänke', 'Spielplatz', 'Wochenmarkt', 'Café', 'Blumen', 'Fahrradständer', 'Licht am Abend', 'Wiese statt Pflaster']
+    .forEach(function (w) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = '+ ' + w;
+      b.onclick = function () { var t = $('#wish'); t.value = (t.value.trim() ? t.value.trim() + ', ' : '') + w; t.dispatchEvent(new Event('input')); };
+      $('#suggest').appendChild(b);
+    });
+  $('#wish').addEventListener('input', function () { $('#generate').disabled = this.value.trim().length < 3; });
+
+  $('#generate').onclick = function () {
+    state.wish = $('#wish').value.trim();
+    show('load');
+    var msgs = ['Wunsch wird gelesen …', 'Platz wird vermessen …', 'Pflaster wird gedanklich aufgebrochen …', 'Bäume werden gepflanzt …', 'Licht und Schatten werden berechnet …', 'Fast fertig …'];
+    var i = 0, bar = $('#bar'); bar.style.width = '0';
+    var iv = setInterval(function () {
+      i++; bar.style.width = Math.min(100, i * 18) + '%';
+      $('#loadmsg').textContent = msgs[Math.min(i, msgs.length - 1)];
+      if (i >= 6) { clearInterval(iv); renderResult(); show(4); }
+    }, 650);
+  };
+
+  function stageHTML(p, f) {
+    return scene(p, f, false) + '<div class="after">' + scene(p, f, true) + '</div>' +
+      '<div class="compare-handle" aria-hidden="true"><span>⇆</span></div><span class="tag tag-l">Heute</span><span class="tag tag-r">Ihr Wunsch</span>' +
+      '<input type="range" min="0" max="100" value="50" class="compare-range" aria-label="Vorher und Nachher vergleichen">';
+  }
+  function renderResult() {
+    var f = detect(state.wish), st = $('#resultStage');
+    st.innerHTML = stageHTML(state.persp, f); st.style.setProperty('--pos', '50%');
+    st.querySelector('.compare-range').addEventListener('input', function () { st.style.setProperty('--pos', this.value + '%'); });
+    $('#resultWish').textContent = '„' + state.wish + '“';
+    $('#resultFeats').innerHTML = FEATURES.filter(function (x) { return f[x.id]; }).map(function (x) { return '<span>' + x.label + '</span>'; }).join('');
+  }
+  $('#submit').onclick = function () {
+    mine.unshift({ p: state.persp, t: state.wish, a: state.answers.alter, b: state.answers.bezug, mine: true });
+    save(); renderGallery(); renderDash(); show('done');
+  };
+  $('#again').onclick = function () { $('#wish').value = ''; $('#generate').disabled = true; show(2); };
+  $$('[data-back]').forEach(function (b) { b.onclick = function () { show(b.dataset.back); }; });
+
+  // ---------- Galerie ----------
+  function renderGallery() {
+    $('#gallery').innerHTML = mine.concat(SEED).map(function (g) {
+      return '<div class="g-item' + (g.mine ? ' mine' : '') + '">' + scene(g.p, detect(g.t), true) +
+        '<p>' + (g.mine ? '<small>Ihr Beitrag</small>' : '') + escapeHTML(g.t) + '</p></div>';
+    }).join('');
+  }
+  function escapeHTML(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  // ---------- Auswertung ----------
+  function bars(obj, total, labels) {
+    var max = Math.max.apply(null, Object.keys(obj).map(function (k) { return obj[k]; }));
+    return Object.keys(obj).sort(function (a, b) { return labels ? obj[b] - obj[a] : 0; }).map(function (k) {
+      var pct = Math.round(obj[k] / total * 100);
+      return '<div class="bar"><span>' + (labels ? labels[k] : k) + '</span><div class="bar-track"><div class="bar-fill" style="width:' + (obj[k] / max * 100) + '%"></div></div><b>' + pct + '&nbsp;%</b></div>';
+    }).join('');
+  }
+  function renderDash() {
+    var n = BASE.n + mine.length, themes = Object.assign({}, BASE.themes), ages = Object.assign({}, BASE.ages), bez = Object.assign({}, BASE.bezug);
+    mine.forEach(function (m) {
+      Object.keys(detect(m.t)).forEach(function (k) { themes[k]++; });
+      if (m.a in ages) ages[m.a]++; if (m.b in bez) bez[m.b]++;
+    });
+    var labels = {}; FEATURES.forEach(function (x) { labels[x.id] = x.label; });
+    $('#kpis').innerHTML = [
+      [n.toLocaleString('de-DE'), 'Teilnehmende'], [(n * 2.3 | 0).toLocaleString('de-DE'), 'erzeugte Bilder'],
+      ['3:48', 'Ø Minuten pro Beitrag'], ['64 %', 'erstmals beteiligt']
+    ].map(function (k) { return '<div class="kpi"><strong>' + k[0] + '</strong><span>' + k[1] + '</span></div>'; }).join('');
+    $('#themes').innerHTML = bars(themes, n, labels);
+    $('#ages').innerHTML = bars(ages, n);
+    $('#bezug').innerHTML = bars(bez, n);
+    var words = [['Bäume', 2.2], ['Schatten', 1.8], ['Brunnen', 1.6], ['Bänke', 1.5], ['autofrei', 1.4], ['Kinder', 1.3], ['Café', 1.2], ['grün', 1.2], ['Markt', 1.1], ['Wasser', 1.1], ['Blumen', 1], ['Ruhe', .95], ['Feste', .9], ['Licht', .85], ['Fahrrad', .8]];
+    $('#words').innerHTML = words.map(function (w) { return '<span style="font-size:' + w[1] + 'rem;opacity:' + (0.45 + w[1] / 4) + '">' + w[0] + '</span>'; }).join('');
+  }
+
+  // ---------- Tabs ----------
+  function openTab(name) {
+    $$('.tab').forEach(function (t) { t.setAttribute('aria-selected', t.dataset.tab === name); });
+    $$('.panel').forEach(function (p) { p.hidden = p.id !== 'p-' + name; });
+  }
+  $$('.tab').forEach(function (t) { t.onclick = function () { openTab(t.dataset.tab); }; });
+  $$('[data-goto]').forEach(function (b) { b.onclick = function () { openTab(b.dataset.goto); }; });
+
+  renderGallery(); renderDash(); show(1); initial = false;
+})();
+</script>
+</body>
+</html>
