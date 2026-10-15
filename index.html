@@ -12,22 +12,22 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="buch.css">
 </head>
 <body>
 
 <header class="nav">
   <div class="wrap nav-inner">
     <a href="#" class="logo" aria-label="KI-Oasen Startseite">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--green)"/><path d="M16 25v-9" stroke="var(--sand)" stroke-width="2.2" stroke-linecap="round"/><circle cx="16" cy="12" r="6.5" fill="var(--leaf)"/></svg>
+      <svg class="sk" viewBox="0 0 36 36" aria-hidden="true"><circle class="y no-stroke" cx="25" cy="11" r="6"/><path d="M4 30 H32 M14 30 V20"/><path class="g" transform="translate(14 15) scale(.24)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/></svg>
       KI-Oasen
     </a>
     <nav class="nav-links" aria-label="Hauptnavigation">
-      <a href="#prinzip">Prinzip</a>
-      <a href="#ablauf">Ablauf</a>
-      <a href="#eichstaett">Referenz</a>
-      <a href="#faq">FAQ</a>
+      <a href="#prinzip"><span class="n">1</span>Prinzip</a>
+      <a href="#ablauf"><span class="n">2</span>Ablauf</a>
+      <a href="#eichstaett"><span class="n">3</span>Referenz</a>
+      <a href="#faq"><span class="n">6</span>FAQ</a>
       <a href="demo.html">Demo</a>
       <a href="#kontakt" class="btn btn-small">Anfragen</a>
     </nav>
@@ -36,61 +36,103 @@
 
 <main>
 
-<!-- HERO -->
+<!-- TITELSEITE -->
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <p class="eyebrow">Bürgerbeteiligung für Städte &amp; Gemeinden</p>
+      <p class="kicker">Bürgerbeteiligung für Städte &amp; Gemeinden</p>
       <h1>Wünsche eintippen.<br><em>Zukunft sehen.</em></h1>
       <p class="lead">KI-Oasen verwandelt die Ideen Ihrer Bürgerinnen und Bürger in Sekunden in ein Bild ihres Platzes, ihrer Straße, ihres Quartiers. Ohne Pläne lesen, ohne Anmeldung, am Handy oder vor Ort. Erprobt in Eichstätt, jetzt für Ihre Stadt buchbar.</p>
       <div class="cta-row">
         <a href="#kontakt" class="btn">Erstgespräch vereinbaren</a>
-        <a href="demo.html" class="btn btn-ghost">Demo ausprobieren →</a>
+        <a href="demo.html" class="link">Demo ausprobieren →</a>
       </div>
     </div>
 
     <figure class="compare" aria-label="Vorher-Nachher-Vergleich eines Stadtplatzes">
-      <div class="compare-stage" style="--pos:50%">
-        <!-- Vorher -->
-        <svg class="scene" viewBox="0 0 600 420" aria-hidden="true">
-          <rect width="600" height="420" fill="#cfd3d6"/>
-          <rect y="0" width="600" height="190" fill="#e7e9ea"/>
-          <g fill="#b9bec2"><rect x="20" y="70" width="120" height="130"/><rect x="150" y="40" width="90" height="160"/><rect x="250" y="80" width="110" height="120"/><rect x="370" y="50" width="100" height="150"/><rect x="480" y="90" width="110" height="110"/></g>
-          <g fill="#9ea4a9"><rect x="40" y="100" width="18" height="24"/><rect x="80" y="100" width="18" height="24"/><rect x="170" y="70" width="16" height="24"/><rect x="205" y="70" width="16" height="24"/><rect x="390" y="80" width="16" height="24"/><rect x="430" y="80" width="16" height="24"/><rect x="275" y="110" width="18" height="24"/><rect x="320" y="110" width="18" height="24"/><rect x="505" y="120" width="18" height="24"/><rect x="545" y="120" width="18" height="24"/></g>
-          <path d="M0 200h600v220H0z" fill="#a7adb1"/>
-          <g stroke="#959ba0" stroke-width="2"><path d="M0 250h600M0 310h600M0 380h600"/><path d="M100 200 40 420M220 200 190 420M340 200 350 420M460 200 510 420"/></g>
-          <g fill="#7f868b"><rect x="120" y="260" width="70" height="28" rx="6"/><rect x="380" y="330" width="80" height="30" rx="6"/></g>
+      <div class="compare-stage" style="--pos:35%">
+        <!-- Vorher: nur Linie, versiegelter Platz mit Autos -->
+        <svg class="scene sk" viewBox="0 0 600 420" aria-hidden="true">
+          <g class="faint"><path d="M0 262 H600 M240 262 L120 420 M360 262 L480 420 M180 262 L-20 420 M420 262 L620 420"/></g>
+          <path d="M0 232 H600"/>
+          <g class="w">
+            <path d="M18 232 V128 L78 78 L138 128 V232 Z"/>
+            <path d="M138 232 V108 H252 V232 Z"/>
+            <path d="M134 108 L156 76 H234 L256 108 Z"/>
+            <path d="M252 232 V118 L306 66 L360 118 V232 Z"/>
+            <path d="M360 232 V96 H472 V232 Z"/>
+            <path d="M362 96 L382 70 H450 L470 96 Z"/>
+            <path d="M472 232 V130 L530 84 L588 130 V232 Z"/>
+          </g>
+          <path d="M356 96 H476 M214 76 V64 H222 V76"/>
+          <circle cx="78" cy="108" r="6"/>
+          <path d="M34 142 h14 v20 h-14z M71 142 h14 v20 h-14z M108 142 h14 v20 h-14z M34 182 h14 v20 h-14z M108 182 h14 v20 h-14z M70 232 V208 a8 8 0 0 1 16 0 V232"/>
+          <path d="M152 120 h14 v20 h-14z M178 120 h14 v20 h-14z M204 120 h14 v20 h-14z M230 120 h14 v20 h-14z M152 158 h14 v20 h-14z M178 158 h14 v20 h-14z M204 158 h14 v20 h-14z M230 158 h14 v20 h-14z M152 200 h14 v20 h-14z M230 200 h14 v20 h-14z M186 232 V204 H206 V232"/>
+          <path d="M266 134 h14 v20 h-14z M299 134 h14 v20 h-14z M332 134 h14 v20 h-14z M266 172 h14 v20 h-14z M332 172 h14 v20 h-14z M296 232 V206 a10 10 0 0 1 20 0 V232 M300 92 h12 v14 h-12z"/>
+          <path d="M374 108 h12 v22 h-12z M400 108 h12 v22 h-12z M426 108 h12 v22 h-12z M452 108 h12 v22 h-12z M374 148 h12 v22 h-12z M400 148 h12 v22 h-12z M426 148 h12 v22 h-12z M452 148 h12 v22 h-12z M376 232 V202 H420 V232 M436 232 V204 H458 V232"/>
+          <path d="M488 142 h14 v20 h-14z M523 142 h14 v20 h-14z M558 142 h14 v20 h-14z M488 182 h14 v20 h-14z M558 182 h14 v20 h-14z M522 232 V206 H538 V232 M524 104 h12 v12 h-12z"/>
+          <g class="faint"><path d="M24 336 L44 296 M120 336 L140 296 M216 336 L236 296 M312 336 L332 296 M408 336 L428 296 M504 336 L524 296"/></g>
+          <g transform="translate(36 302) scale(1.15)"><path class="w" d="M0 24 V14 Q0 9 6 9 L16 1 H40 L50 9 H58 Q64 9 64 15 V24 Z"/><path d="M19 9 L24 4 H38 L43 9 Z M31 4 V9"/><circle class="w" cx="13" cy="24" r="5"/><circle class="w" cx="51" cy="24" r="5"/></g>
+          <g transform="translate(228 302) scale(1.15)"><path class="w" d="M0 24 V14 Q0 9 6 9 L16 1 H40 L50 9 H58 Q64 9 64 15 V24 Z"/><path d="M19 9 L24 4 H38 L43 9 Z M31 4 V9"/><circle class="w" cx="13" cy="24" r="5"/><circle class="w" cx="51" cy="24" r="5"/></g>
+          <g transform="translate(420 302) scale(1.15)"><path class="w" d="M0 24 V14 Q0 9 6 9 L16 1 H40 L50 9 H58 Q64 9 64 15 V24 Z"/><path d="M19 9 L24 4 H38 L43 9 Z M31 4 V9"/><circle class="w" cx="13" cy="24" r="5"/><circle class="w" cx="51" cy="24" r="5"/></g>
+          <g transform="translate(130 350) scale(1.5)"><path class="w" d="M0 24 V14 Q0 9 6 9 L16 1 H40 L50 9 H58 Q64 9 64 15 V24 Z"/><path d="M19 9 L24 4 H38 L43 9 Z M31 4 V9"/><circle class="w" cx="13" cy="24" r="5"/><circle class="w" cx="51" cy="24" r="5"/></g>
+          <g transform="translate(372 354) scale(1.5)"><path class="w" d="M0 24 V14 Q0 9 6 9 L16 1 H40 L50 9 H58 Q64 9 64 15 V24 Z"/><path d="M19 9 L24 4 H38 L43 9 Z M31 4 V9"/><circle class="w" cx="13" cy="24" r="5"/><circle class="w" cx="51" cy="24" r="5"/></g>
+          <g class="faint"><path d="M30 404 h18 M300 400 h20 M560 406 h14 M40 368 h12 M330 372 h16 M580 380 h12 M250 410 h22"/></g>
+          <path d="M572 290 V200"/><rect class="w" x="560" y="176" width="24" height="24"/><text x="566.5" y="194" style="font-size:16px">P</text>
         </svg>
-        <!-- Nachher -->
+        <!-- Nachher: dieselbe Zeichnung mit Bäumen, Sonnensegel, Wasserspiel, Bänken -->
         <div class="after">
-        <svg class="scene" viewBox="0 0 600 420" aria-hidden="true">
-          <rect width="600" height="420" fill="#cfe3c9"/>
-          <rect y="0" width="600" height="190" fill="#f3ead8"/>
-          <g fill="#e9d6b4"><rect x="20" y="70" width="120" height="130"/><rect x="150" y="40" width="90" height="160"/><rect x="250" y="80" width="110" height="120"/><rect x="370" y="50" width="100" height="150"/><rect x="480" y="90" width="110" height="110"/></g>
-          <g fill="#c6a777"><rect x="40" y="100" width="18" height="24"/><rect x="80" y="100" width="18" height="24"/><rect x="170" y="70" width="16" height="24"/><rect x="205" y="70" width="16" height="24"/><rect x="390" y="80" width="16" height="24"/><rect x="430" y="80" width="16" height="24"/><rect x="275" y="110" width="18" height="24"/><rect x="320" y="110" width="18" height="24"/><rect x="505" y="120" width="18" height="24"/><rect x="545" y="120" width="18" height="24"/></g>
-          <path d="M0 200h600v220H0z" fill="#bcd8a8"/>
-          <path d="M0 300 C150 270 250 330 600 290 V330 C320 360 160 310 0 345Z" fill="#e8dcc2"/>
-          <ellipse cx="300" cy="380" rx="120" ry="24" fill="#8fc3d6"/>
-          <ellipse cx="300" cy="376" rx="90" ry="14" fill="#b6dbe7"/>
-          <g><rect x="76" y="230" width="8" height="60" fill="#6b4f2c"/><circle cx="80" cy="215" r="42" fill="#3f7d3a"/><circle cx="62" cy="230" r="26" fill="#4f9147"/>
-             <rect x="236" y="215" width="7" height="50" fill="#6b4f2c"/><circle cx="240" cy="200" r="34" fill="#4f9147"/>
-             <rect x="420" y="225" width="8" height="60" fill="#6b4f2c"/><circle cx="424" cy="208" r="44" fill="#3f7d3a"/><circle cx="446" cy="226" r="24" fill="#5ea255"/>
-             <rect x="540" y="250" width="7" height="50" fill="#6b4f2c"/><circle cx="544" cy="238" r="30" fill="#4f9147"/></g>
-          <g fill="#a9784a"><rect x="130" y="320" width="70" height="10" rx="3"/><rect x="420" y="320" width="70" height="10" rx="3"/></g>
-          <g fill="#e2725b"><circle cx="160" cy="300" r="6"/><circle cx="455" cy="300" r="6"/></g>
-          <g fill="#2f3b2c"><circle cx="165" cy="312" r="5"/><rect x="160" y="316" width="10" height="16" rx="4"/><circle cx="460" cy="312" r="5"/><rect x="455" y="316" width="10" height="16" rx="4"/></g>
+        <svg class="scene sk" viewBox="0 0 600 420" aria-hidden="true">
+          <g class="faint"><path d="M0 262 H600 M240 262 L120 420 M360 262 L480 420 M180 262 L-20 420 M420 262 L620 420"/></g>
+          <path d="M0 232 H600"/>
+          <g class="w">
+            <path d="M18 232 V128 L78 78 L138 128 V232 Z"/>
+            <path d="M138 232 V108 H252 V232 Z"/>
+            <path d="M134 108 L156 76 H234 L256 108 Z"/>
+            <path d="M252 232 V118 L306 66 L360 118 V232 Z"/>
+            <path d="M360 232 V96 H472 V232 Z"/>
+            <path d="M362 96 L382 70 H450 L470 96 Z"/>
+            <path d="M472 232 V130 L530 84 L588 130 V232 Z"/>
+          </g>
+          <path d="M356 96 H476 M214 76 V64 H222 V76"/>
+          <circle cx="78" cy="108" r="6"/>
+          <path d="M34 142 h14 v20 h-14z M71 142 h14 v20 h-14z M108 142 h14 v20 h-14z M34 182 h14 v20 h-14z M108 182 h14 v20 h-14z M70 232 V208 a8 8 0 0 1 16 0 V232"/>
+          <path d="M152 120 h14 v20 h-14z M178 120 h14 v20 h-14z M204 120 h14 v20 h-14z M230 120 h14 v20 h-14z M152 158 h14 v20 h-14z M178 158 h14 v20 h-14z M204 158 h14 v20 h-14z M230 158 h14 v20 h-14z M152 200 h14 v20 h-14z M230 200 h14 v20 h-14z M186 232 V204 H206 V232"/>
+          <path d="M266 134 h14 v20 h-14z M299 134 h14 v20 h-14z M332 134 h14 v20 h-14z M266 172 h14 v20 h-14z M332 172 h14 v20 h-14z M296 232 V206 a10 10 0 0 1 20 0 V232 M300 92 h12 v14 h-12z"/>
+          <path d="M374 108 h12 v22 h-12z M400 108 h12 v22 h-12z M426 108 h12 v22 h-12z M452 108 h12 v22 h-12z M374 148 h12 v22 h-12z M400 148 h12 v22 h-12z M426 148 h12 v22 h-12z M452 148 h12 v22 h-12z M376 232 V202 H420 V232 M436 232 V204 H458 V232"/>
+          <path d="M488 142 h14 v20 h-14z M523 142 h14 v20 h-14z M558 142 h14 v20 h-14z M488 182 h14 v20 h-14z M558 182 h14 v20 h-14z M522 232 V206 H538 V232 M524 104 h12 v12 h-12z"/>
+          <ellipse class="g-l" cx="64" cy="320" rx="44" ry="8"/>
+          <ellipse class="g-l" cx="456" cy="324" rx="44" ry="8"/>
+          <ellipse class="g-l" cx="560" cy="320" rx="32" ry="6"/>
+          <path d="M64 254 V318 M64 284 l-9 -10 M452 260 V322 M452 290 l9 -9 M560 270 V318"/>
+          <path class="g" transform="translate(64 232) scale(.95)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+          <path class="g" transform="translate(452 236)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+          <path class="g" transform="translate(560 250) scale(.8)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+          <path d="M150 214 V302 M268 186 V292 M304 222 V318 M186 252 V330"/>
+          <path class="y" d="M150 214 L268 186 L304 222 L186 252 Z"/>
+          <ellipse class="w" cx="300" cy="374" rx="104" ry="20"/>
+          <ellipse class="faint" cx="300" cy="374" rx="76" ry="12"/>
+          <path d="M268 370 q4 -26 8 0 M296 366 q4 -34 8 0 M324 370 q4 -26 8 0 M258 348 l-3 -4 M342 348 l3 -4 M300 326 v-5"/>
+          <path d="M96 344 h60 M100 344 v12 M152 344 v12 M96 330 V344"/>
+          <path d="M440 346 h60 M444 346 v12 M496 346 v12 M500 332 V346"/>
+          <circle class="w" cx="124" cy="324" r="4"/><path d="M124 328 V344 H138 V356 M124 334 l9 5"/>
+          <circle class="w" cx="220" cy="282" r="4"/><path d="M220 286 V300 M220 290 l-6 6 M220 290 l6 5 M220 300 l-4 11 M220 300 l4 11"/>
+          <circle class="w" cx="236" cy="344" r="3"/><path d="M236 347 V356 M236 350 l-4 4 M236 350 l4 -4 M236 356 l-3 7 M236 356 l3 7"/>
+          <circle class="w" cx="366" cy="346" r="3"/><path d="M366 349 V358 M366 352 l-4 -4 M366 352 l4 4 M366 358 l-3 7 M366 358 l3 7"/>
+          <circle class="w" cx="512" cy="318" r="4"/><path d="M512 322 V336 M512 326 l-6 6 M512 326 l7 6 M512 336 l-4 11 M512 336 l4 11"/>
+          <circle class="w" cx="526" cy="330" r="3"/><path d="M526 333 V342 M526 336 l-7 2 M526 342 l-3 7 M526 342 l3 7"/>
         </svg>
         </div>
         <div class="compare-handle" aria-hidden="true"><span>⇆</span></div>
-        <span class="tag tag-l">Heute</span><span class="tag tag-r">Ihr Wunsch</span>
-        <input type="range" min="0" max="100" value="50" class="compare-range" aria-label="Vorher und Nachher vergleichen">
+        <span class="tag tag-l">Heute</span><span class="tag tag-r ai">Ihr Wunsch</span>
+        <input type="range" min="0" max="100" value="35" class="compare-range" aria-label="Vorher und Nachher vergleichen">
       </div>
-      <figcaption class="prompt-chip"><span class="chip-label">Eingabe:</span> „Mehr Bäume, Schatten, ein Wasserspiel für Kinder und Bänke zum Sitzen“</figcaption>
+      <figcaption class="prompt-chip"><span class="chip-label">Eingabe:</span> <span>„Mehr Bäume, Schatten, ein Wasserspiel für Kinder und Bänke zum Sitzen“</span></figcaption>
     </figure>
   </div>
 </section>
 
-<!-- LOGOS / TRUST -->
+<!-- LEISTE -->
 <section class="strip">
   <div class="wrap strip-inner">
     <span>Pilotprojekt der Stadt Eichstätt</span><span class="dot">•</span>
@@ -99,38 +141,44 @@
   </div>
 </section>
 
-<!-- PROBLEM / PRINZIP -->
+<!-- 1 · PRINZIP -->
 <section id="prinzip" class="section">
   <div class="wrap">
-    <div class="split">
-      <div>
-        <p class="eyebrow">Das Prinzip</p>
-        <h2>Beteiligung scheitert selten am Willen, sondern an der Vorstellungskraft.</h2>
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">1</span><p class="ch-title">Das<br>Prinzip</p></div>
       </div>
-      <div class="prose">
-        <p>Bei klassischen Bürgerversammlungen sitzen oft dieselben Menschen im Saal. Lagepläne und Fachbegriffe schrecken ab, und wer keine Zeit für einen Abendtermin hat, bleibt außen vor.</p>
-        <p>KI-Oasen dreht das um: Menschen beschreiben in ihren eigenen Worten, was sie sich wünschen, und sehen sofort ein realistisches Bild davon, mitten in ihrer Stadt. Aus vielen einzelnen Bildern entsteht ein klares Stimmungsbild für Politik, Verwaltung und Planung.</p>
+      <div class="pg-r">
+        <h2>Beteiligung scheitert selten am Willen, sondern an der Vorstellungskraft.</h2>
+        <div class="prose">
+          <p>Bei klassischen Bürgerversammlungen sitzen oft dieselben Menschen im Saal. Lagepläne und Fachbegriffe schrecken ab, und wer keine Zeit für einen Abendtermin hat, bleibt außen vor.</p>
+          <p>KI-Oasen dreht das um: Menschen beschreiben in ihren eigenen Worten, was sie sich wünschen, und sehen sofort ein realistisches Bild davon, mitten in ihrer Stadt. Aus vielen einzelnen Bildern entsteht ein klares Stimmungsbild für Politik, Verwaltung und Planung.</p>
+        </div>
       </div>
     </div>
 
-    <div class="cards four">
-      <article class="card">
+    <div class="steps">
+      <article class="step">
         <span class="num">1</span>
+        <svg class="sk" viewBox="0 0 120 80" aria-hidden="true"><rect class="w" x="44" y="4" width="32" height="70" rx="5"/><path d="M56 9 h8"/><rect class="y" x="50" y="18" width="6" height="6"/><rect x="50" y="30" width="6" height="6"/><rect x="50" y="42" width="6" height="6"/><path d="M60 21 h10 M60 33 h10 M60 45 h7 M50 58 h20 v8 h-20 z"/></svg>
         <h3>Ein paar Fragen</h3>
         <p>Anonym: Alter, Bezug zum Ort, wie oft man ihn nutzt. Dauert 20 Sekunden.</p>
       </article>
-      <article class="card">
+      <article class="step">
         <span class="num">2</span>
+        <svg class="sk" viewBox="0 0 120 80" aria-hidden="true"><rect class="w" x="6" y="22" width="36" height="28"/><path d="M12 46 V36 L20 30 L28 36 V46"/><rect class="w" x="78" y="22" width="36" height="28"/><path d="M84 46 H108 M90 46 V34 H102 V46"/><rect class="y" x="40" y="12" width="40" height="32"/><path d="M46 38 H74 M52 38 V27 L60 21 L68 27 V38"/><path d="M60 70 V52 M60 52 l-5 6 M60 52 l5 6"/></svg>
         <h3>Blickwinkel wählen</h3>
         <p>Aus mehreren Fotos des Ortes die Perspektive aussuchen, die zur eigenen Idee passt.</p>
       </article>
-      <article class="card">
+      <article class="step">
         <span class="num">3</span>
+        <svg class="sk" viewBox="0 0 120 80" aria-hidden="true"><path class="y" d="M20 8 H100 a6 6 0 0 1 6 6 V44 a6 6 0 0 1 -6 6 H54 L40 66 V50 H20 a6 6 0 0 1 -6 -6 V14 a6 6 0 0 1 6 -6 Z"/><path d="M26 22 H92 M26 30 H82 M26 38 H66"/></svg>
         <h3>Wunsch beschreiben</h3>
         <p>Ein paar Stichpunkte reichen: „mehr Grün, Brunnen, Platz für Märkte“.</p>
       </article>
-      <article class="card">
+      <article class="step">
         <span class="num">4</span>
+        <svg class="sk" viewBox="0 0 120 80" aria-hidden="true"><rect class="w" x="14" y="6" width="92" height="66"/><circle class="y" cx="88" cy="22" r="7"/><path d="M14 60 H106 M46 60 V44"/><path class="g" transform="translate(46 34) scale(.32)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/><circle class="w" cx="74" cy="44" r="2.5"/><path d="M74 46.5 V52 M74 48 l-3 3 M74 48 l3 3 M74 52 l-2.5 7 M74 52 l2.5 7"/></svg>
         <h3>Zukunft sehen</h3>
         <p>Nach 30–60 Sekunden zeigt die KI das Bild. Verfeinern, einreichen, die Galerie der anderen ansehen.</p>
       </article>
@@ -138,12 +186,26 @@
   </div>
 </section>
 
-<!-- ABLAUF / PAKET -->
-<section id="ablauf" class="section section-tint">
+<!-- 2 · ABLAUF -->
+<section id="ablauf" class="section">
   <div class="wrap">
-    <p class="eyebrow">So läuft es mit Ihrer Stadt</p>
-    <h2>Ein Paket, fünf Schritte, ein Ergebnis, mit dem man arbeiten kann.</h2>
-    <p class="lead narrow">Wir liefern nicht nur Software, sondern begleiten den gesamten Beteiligungsprozess: von der ersten Frage bis zur Übergabe der Ergebnisse an Gemeinderat und Planung.</p>
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">2</span><p class="ch-title">So läuft es<br>mit Ihrer<br>Stadt</p></div>
+        <svg class="sk" viewBox="0 0 320 230" aria-hidden="true">
+          <path class="w" d="M10 210 H70 V172 H130 V134 H190 V96 H250 V58 H310 V210 Z"/>
+          <path class="y" d="M250 58 H310 V210 H250 Z"/>
+          <path d="M70 172 V210 M130 134 V210 M190 96 V210 M2 210 H318"/>
+          <path d="M298 58 V20"/><path class="y" d="M298 20 L276 27 L298 34 Z"/>
+          <circle class="w" cx="100" cy="142" r="5"/><path d="M100 147 V158 M100 150 l-7 -5 M100 150 l7 4 M100 158 l-5 14 M100 158 l5 14"/>
+          <text x="32" y="200">01</text><text x="92" y="200">02</text><text x="152" y="200">03</text><text x="212" y="200">04</text><text x="272" y="200">05</text>
+        </svg>
+      </div>
+      <div class="pg-r">
+        <h2>Ein Paket, fünf Schritte, ein Ergebnis, mit dem man arbeiten kann.</h2>
+        <p class="lead">Wir liefern nicht nur Software, sondern begleiten den gesamten Beteiligungsprozess: von der ersten Frage bis zur Übergabe der Ergebnisse an Gemeinderat und Planung.</p>
+      </div>
+    </div>
 
     <ol class="timeline">
       <li>
@@ -190,29 +252,63 @@
   </div>
 </section>
 
-<!-- REFERENZ EICHSTÄTT -->
-<section id="eichstaett" class="section section-dark">
+<!-- 3 · REFERENZ EICHSTÄTT -->
+<section id="eichstaett" class="section">
   <div class="wrap">
-    <p class="eyebrow eyebrow-light">Referenzprojekt</p>
-    <h2>Eichstätt: Vom Kunstprojekt zum Werkzeug der Stadtplanung.</h2>
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">3</span><p class="ch-title">Referenz-<br>projekt</p></div>
+      </div>
+      <div class="pg-r">
+        <h2>Eichstätt: Vom Kunstprojekt zum Werkzeug der Stadtplanung.</h2>
+      </div>
+    </div>
 
-    <div class="split">
-      <div class="prose prose-light">
+    <div class="spread ref-body">
+      <div class="pg-l">
+        <svg class="sk" viewBox="0 0 400 280" aria-hidden="true">
+          <g class="faint"><path d="M10 236 H390 M150 210 L96 276 M250 210 L304 276"/></g>
+          <path d="M10 210 H390"/>
+          <g class="w">
+            <path d="M24 210 V140 L64 110 L104 140 V210 Z"/>
+            <path d="M104 210 V128 H150 V210 Z"/>
+            <path d="M250 210 V130 H300 V210 Z"/>
+            <path d="M300 210 V146 L336 118 L372 146 V210 Z"/>
+            <path d="M150 210 V92 H180 V210 Z"/>
+            <path d="M220 210 V92 H250 V210 Z"/>
+            <path d="M180 210 V122 L200 104 L220 122 V210 Z"/>
+          </g>
+          <path class="o" d="M150 92 L165 42 L180 92 Z"/>
+          <path class="o" d="M220 92 L235 42 L250 92 Z"/>
+          <path d="M165 42 V30 M161 35 H169 M235 42 V30 M231 35 H239"/>
+          <path d="M160 104 v14 M170 104 v14 M230 104 v14 M240 104 v14 M190 210 V182 a10 10 0 0 1 20 0 V210 M160 170 h10 v16 h-10z M230 170 h10 v16 h-10z"/>
+          <circle cx="165" cy="146" r="5"/><circle cx="235" cy="146" r="5"/><circle cx="200" cy="140" r="7"/>
+          <path d="M40 154 h10 v14 h-10z M78 154 h10 v14 h-10z M40 184 h10 v14 h-10z M78 184 h10 v14 h-10z M58 128 h12 v10 h-12z M114 140 h10 v14 h-10z M132 140 h10 v14 h-10z M114 172 h10 v14 h-10z M132 172 h10 v14 h-10z M262 144 h10 v14 h-10z M280 144 h10 v14 h-10z M262 176 h10 v14 h-10z M280 176 h10 v14 h-10z M314 160 h10 v14 h-10z M348 160 h10 v14 h-10z M330 210 V186 H344 V210"/>
+          <path d="M60 216 V258 M338 216 V256"/>
+          <path class="g" transform="translate(60 200) scale(.7)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+          <path class="g" transform="translate(338 198) scale(.75)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+          <circle class="w" cx="128" cy="238" r="4"/><path d="M128 242 V256 M128 246 l-6 6 M128 246 l6 5 M128 256 l-4 11 M128 256 l4 11"/>
+          <circle class="w" cx="262" cy="232" r="4"/><path d="M262 236 V250 M262 240 l-6 5 M262 240 l6 6 M262 250 l-4 11 M262 250 l4 11"/>
+          <circle class="w" cx="276" cy="240" r="3"/><path d="M276 243 V252 M276 246 l-5 -3 M276 252 l-3 7 M276 252 l3 7"/>
+          <path d="M172 252 h48 M176 252 v9 M216 252 v9"/>
+        </svg>
+      </div>
+      <div class="pg-r prose">
         <p>Angefangen hat alles 2024 mit einer achtwöchigen Ausstellung: Wie könnten Eichstätts versiegelte Plätze im Jahr 2034 aussehen? Über eine Umfrage gesammelte Ideen dienten als Grundlage für ein eigens trainiertes KI-Modell, das Visionen für Marktplatz und Residenzplatz erzeugte.</p>
         <p>2025 folgte der nächste Schritt: Beim Festival „Stadt Land Kunst“ konnten Besucherinnen und Besucher ihre Wünsche direkt eingeben und sahen das Ergebnis in Echtzeit.</p>
         <p>2026 nutzt die Stadt KI-Oasen für die Beteiligung zum <strong>Domplatz</strong>, der seit 2024 autofrei ist. Die Ergebnisse fließen in den Gestaltungswettbewerb ein, der 2028 startet.</p>
-        <a href="demo.html" class="btn btn-light">So funktioniert es: Demo starten →</a>
+        <a href="demo.html" class="link">So funktioniert es: Demo starten →</a>
       </div>
+    </div>
 
-      <div class="stats">
-        <!-- Kennzahlen Domplatz 2026: Platzhalterwerte, vor Veröffentlichung durch echte Zahlen ersetzen -->
-        <div class="stat"><strong>2.140</strong><span>Teilnehmende an der Domplatz-Beteiligung</span></div>
-        <div class="stat"><strong>4.870</strong><span>KI-Visualisierungen erzeugt</span></div>
-        <div class="stat"><strong>41&nbsp;%</strong><span>der Teilnehmenden unter 30 Jahre</span></div>
-        <div class="stat"><strong>68&nbsp;%</strong><span>beteiligten sich zum ersten Mal an einem Planungsprozess</span></div>
-        <div class="stat"><strong>Ø 4 Min.</strong><span>vom QR-Code bis zum eigenen Zukunftsbild</span></div>
-        <div class="stat"><strong>95&nbsp;%</strong><span>wünschten sich in der Erstumfrage Veränderung</span></div>
-      </div>
+    <div class="stats">
+      <!-- Kennzahlen Domplatz 2026: Platzhalterwerte, vor Veröffentlichung durch echte Zahlen ersetzen -->
+      <div class="stat"><strong>2.140</strong><span>Teilnehmende an der Domplatz-Beteiligung</span></div>
+      <div class="stat"><strong>4.870</strong><span>KI-Visualisierungen erzeugt</span></div>
+      <div class="stat"><strong>41&nbsp;%</strong><span>der Teilnehmenden unter 30 Jahre</span></div>
+      <div class="stat"><strong>68&nbsp;%</strong><span>beteiligten sich zum ersten Mal an einem Planungsprozess</span></div>
+      <div class="stat"><strong>Ø 4 Min.</strong><span>vom QR-Code bis zum eigenen Zukunftsbild</span></div>
+      <div class="stat"><strong>95&nbsp;%</strong><span>wünschten sich in der Erstumfrage Veränderung</span></div>
     </div>
 
     <div class="milestones">
@@ -223,84 +319,145 @@
   </div>
 </section>
 
-<!-- ANWENDUNGEN -->
+<!-- 4 · ANWENDUNGEN -->
 <section class="section">
   <div class="wrap">
-    <p class="eyebrow">Wofür es passt</p>
-    <h2>Überall dort, wo sich ein Ort verändern soll.</h2>
-    <div class="cards three">
-      <article class="card card-plain"><h3>Plätze &amp; Innenstädte</h3><p>Marktplatz neu denken, Parkflächen umnutzen, Aufenthaltsqualität steigern.</p></article>
-      <article class="card card-plain"><h3>Entsiegelung &amp; Klima</h3><p>Wo sollen Bäume, Wasser und Schatten hin? Klimaanpassung, die Menschen mittragen.</p></article>
-      <article class="card card-plain"><h3>Straßen &amp; Mobilität</h3><p>Verkehrsberuhigung, Radwege, Begegnungszonen: sichtbar machen, bevor gebaut wird.</p></article>
-      <article class="card card-plain"><h3>Parks &amp; Ufer</h3><p>Spielplätze, Grünflächen und Flussufer gemeinsam mit allen Generationen entwickeln.</p></article>
-      <article class="card card-plain"><h3>Schulhöfe &amp; Quartiere</h3><p>Kinder und Jugendliche erreichen, die bei klassischen Formaten nie dabei sind.</p></article>
-      <article class="card card-plain"><h3>Leerstand &amp; Umnutzung</h3><p>Ideen für leere Läden, Brachen und alte Gebäude einsammeln und zeigen.</p></article>
-    </div>
-  </div>
-</section>
-
-<!-- VORTEILE -->
-<section class="section section-tint">
-  <div class="wrap">
-    <div class="split">
-      <div>
-        <p class="eyebrow">Warum KI-Oasen</p>
-        <h2>Mehr Menschen. Bessere Ergebnisse. Weniger Streit.</h2>
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">4</span><p class="ch-title">Wofür<br>es passt</p></div>
       </div>
-      <ul class="checks">
-        <li><strong>Niederschwellig.</strong> Kein Konto, keine App, keine Vorkenntnisse. QR-Code scannen und loslegen.</li>
-        <li><strong>Neue Zielgruppen.</strong> Junge Menschen, Berufstätige und Familien, die nie zur Bürgerversammlung kommen.</li>
-        <li><strong>Konkret statt abstrakt.</strong> Bilder sagen mehr als Stichpunkte auf Moderationskarten und machen Wünsche vergleichbar.</li>
-        <li><strong>Auswertbar.</strong> Strukturierte Daten nach Themen und Zielgruppen statt eines Stapels Zettel.</li>
-        <li><strong>Anonym &amp; datensparsam.</strong> Keine personenbezogenen Daten nötig, DSGVO-konform konzipiert.</li>
-        <li><strong>Aus der Praxis.</strong> Entwickelt von Architekten und Entwicklern in einer echten Stadt, nicht im Labor.</li>
-      </ul>
+      <div class="pg-r">
+        <h2>Überall dort, wo sich ein Ort verändern soll.</h2>
+      </div>
+    </div>
+    <div class="uses">
+      <article class="use">
+        <svg class="sk" viewBox="0 0 96 64" aria-hidden="true"><path d="M6 56 H90"/><path class="w" d="M12 56 V28 L24 18 L36 28 V56 Z"/><path class="y" d="M36 56 V22 H60 V56 Z"/><path class="w" d="M60 56 V32 L72 22 L84 32 V56 Z"/><path d="M20 36 h6 v8 h-6z M44 30 h8 v8 h-8z M44 44 V56 H52 V44 M68 40 h8 v8 h-8z"/></svg>
+        <h3>Plätze &amp; Innenstädte</h3><p>Marktplatz neu denken, Parkflächen umnutzen, Aufenthaltsqualität steigern.</p>
+      </article>
+      <article class="use">
+        <svg class="sk" viewBox="0 0 96 64" aria-hidden="true"><path d="M6 46 H32 l3 -4 l3 4 H90 M6 56 H90 M24 46 V56 M62 46 V56"/><path d="M36 44 V20"/><path class="g" d="M36 30 c-12 -1 -16 -10 -14 -15 c9 0 14 6 14 15 z"/><path class="g" d="M36 24 c8 -6 16 -4 17 0 c-4 7 -12 7 -17 0 z"/></svg>
+        <h3>Entsiegelung &amp; Klima</h3><p>Wo sollen Bäume, Wasser und Schatten hin? Klimaanpassung, die Menschen mittragen.</p>
+      </article>
+      <article class="use">
+        <svg class="sk" viewBox="0 0 96 64" aria-hidden="true"><rect class="y" x="10" y="54" width="10" height="6"/><rect class="y" x="28" y="54" width="10" height="6"/><rect class="y" x="46" y="54" width="10" height="6"/><rect class="y" x="64" y="54" width="10" height="6"/><rect class="y" x="82" y="54" width="10" height="6"/><circle class="w" cx="26" cy="36" r="11"/><circle class="w" cx="70" cy="36" r="11"/><path d="M26 36 L38 18 H60 L70 36 M38 18 L48 36 L60 18 M48 36 H26 M34 14 H42 M60 18 V12 H67"/></svg>
+        <h3>Straßen &amp; Mobilität</h3><p>Verkehrsberuhigung, Radwege, Begegnungszonen: sichtbar machen, bevor gebaut wird.</p>
+      </article>
+      <article class="use">
+        <svg class="sk" viewBox="0 0 96 64" aria-hidden="true"><path class="s" d="M6 46 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 V60 H6 Z"/><path d="M6 54 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"/><path d="M6 40 H66 q10 0 16 6 M30 40 V24"/><path class="g" transform="translate(30 18) scale(.4)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/></svg>
+        <h3>Parks &amp; Ufer</h3><p>Spielplätze, Grünflächen und Flussufer gemeinsam mit allen Generationen entwickeln.</p>
+      </article>
+      <article class="use">
+        <svg class="sk" viewBox="0 0 96 64" aria-hidden="true"><path d="M6 60 H90"/><rect class="w" x="22" y="48" width="14" height="10"/><rect class="y" x="15" y="38" width="14" height="10"/><rect class="w" x="29" y="38" width="14" height="10"/><rect class="w" x="22" y="28" width="14" height="10"/><rect class="w" x="15" y="18" width="14" height="10"/><rect class="y" x="29" y="18" width="14" height="10"/><circle class="w" cx="74" cy="52" r="7"/><path d="M68 50 q6 4 12 0"/><circle class="w" cx="60" cy="28" r="3"/><path d="M60 31 V42 M60 34 l-5 4 M60 34 l5 -3 M60 42 l-4 8 M60 42 l4 8"/></svg>
+        <h3>Schulhöfe &amp; Quartiere</h3><p>Kinder und Jugendliche erreichen, die bei klassischen Formaten nie dabei sind.</p>
+      </article>
+      <article class="use">
+        <svg class="sk" viewBox="0 0 96 64" aria-hidden="true"><path class="w" d="M14 58 V10 H82 V58 Z"/><path d="M6 58 H90 M14 20 H82 M14 20 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l2 -2"/><rect class="y" x="20" y="32" width="30" height="22"/><path d="M58 58 V32 H74 V58 M71 46 v2"/></svg>
+        <h3>Leerstand &amp; Umnutzung</h3><p>Ideen für leere Läden, Brachen und alte Gebäude einsammeln und zeigen.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
+<!-- 5 · VORTEILE -->
+<section class="section">
+  <div class="wrap">
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">5</span><p class="ch-title">Warum<br>KI-Oasen</p></div>
+      </div>
+      <div class="pg-r">
+        <h2>Mehr Menschen. Bessere Ergebnisse. Weniger Streit.</h2>
+        <ul class="checks">
+          <li><strong>Niederschwellig.</strong> Kein Konto, keine App, keine Vorkenntnisse. QR-Code scannen und loslegen.</li>
+          <li><strong>Neue Zielgruppen.</strong> Junge Menschen, Berufstätige und Familien, die nie zur Bürgerversammlung kommen.</li>
+          <li><strong>Konkret statt abstrakt.</strong> Bilder sagen mehr als Stichpunkte auf Moderationskarten und machen Wünsche vergleichbar.</li>
+          <li><strong>Auswertbar.</strong> Strukturierte Daten nach Themen und Zielgruppen statt eines Stapels Zettel.</li>
+          <li><strong>Anonym &amp; datensparsam.</strong> Keine personenbezogenen Daten nötig, DSGVO-konform konzipiert.</li>
+          <li><strong>Aus der Praxis.</strong> Entwickelt von Architekten und Entwicklern in einer echten Stadt, nicht im Labor.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · FRAGEN -->
 <section id="faq" class="section">
-  <div class="wrap narrow-wrap">
-    <p class="eyebrow">Häufige Fragen</p>
-    <h2>Gut zu wissen</h2>
-    <details>
-      <summary>Was kostet ein KI-Oasen-Projekt?</summary>
-      <p>Das hängt von der Größe des Ortes, der Zahl der Perspektiven und dem Umfang der Kampagne ab. Nach einem kurzen Erstgespräch erhalten Sie ein Festpreisangebot für das komplette Paket.</p>
-    </details>
-    <details>
-      <summary>Wie lange dauert ein Projekt?</summary>
-      <p>Vom Planungsworkshop bis zum Abschlussworkshop rechnen wir mit etwa drei bis vier Monaten. Die Beteiligungsphase selbst läuft meist vier bis acht Wochen.</p>
-    </details>
-    <details>
-      <summary>Sind die Bilder schon fertige Planungen?</summary>
-      <p>Nein, und das ist gewollt. Die Bilder sind Wunschbilder, keine Entwürfe. Sie zeigen, was Menschen sich vorstellen, und geben Planerinnen und Planern eine klare Richtung. Das macht spätere Wettbewerbe und Entwürfe treffsicherer.</p>
-    </details>
-    <details>
-      <summary>Wie steht es um Datenschutz?</summary>
-      <p>Die Teilnahme ist anonym. Wir erheben nur wenige statistische Angaben wie Altersgruppe und Bezug zum Ort. Eingaben werden moderiert, bevor sie in der öffentlichen Galerie erscheinen.</p>
-    </details>
-    <details>
-      <summary>Was ist mit Menschen, die kein Smartphone nutzen?</summary>
-      <p>Für sie gibt es Mitmach-Stationen vor Ort mit Tablet und Ansprechperson, zum Beispiel im Rathaus, in der Bücherei oder auf dem Wochenmarkt.</p>
-    </details>
-    <details>
-      <summary>Können wir die Plattform auch selbst weiter betreiben?</summary>
-      <p>Ja. Die Software gehört nach der Einrichtung Ihrer Stadt und kann auch für weitere Orte und Fragestellungen genutzt werden.</p>
-    </details>
+  <div class="wrap">
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">6</span><p class="ch-title">Häufige<br>Fragen</p></div>
+      </div>
+      <div class="pg-r">
+        <h2>Gut zu wissen</h2>
+        <details>
+          <summary>Was kostet ein KI-Oasen-Projekt?</summary>
+          <p>Das hängt von der Größe des Ortes, der Zahl der Perspektiven und dem Umfang der Kampagne ab. Nach einem kurzen Erstgespräch erhalten Sie ein Festpreisangebot für das komplette Paket.</p>
+        </details>
+        <details>
+          <summary>Wie lange dauert ein Projekt?</summary>
+          <p>Vom Planungsworkshop bis zum Abschlussworkshop rechnen wir mit etwa drei bis vier Monaten. Die Beteiligungsphase selbst läuft meist vier bis acht Wochen.</p>
+        </details>
+        <details>
+          <summary>Sind die Bilder schon fertige Planungen?</summary>
+          <p>Nein, und das ist gewollt. Die Bilder sind Wunschbilder, keine Entwürfe. Sie zeigen, was Menschen sich vorstellen, und geben Planerinnen und Planern eine klare Richtung. Das macht spätere Wettbewerbe und Entwürfe treffsicherer.</p>
+        </details>
+        <details>
+          <summary>Wie steht es um Datenschutz?</summary>
+          <p>Die Teilnahme ist anonym. Wir erheben nur wenige statistische Angaben wie Altersgruppe und Bezug zum Ort. Eingaben werden moderiert, bevor sie in der öffentlichen Galerie erscheinen.</p>
+        </details>
+        <details>
+          <summary>Was ist mit Menschen, die kein Smartphone nutzen?</summary>
+          <p>Für sie gibt es Mitmach-Stationen vor Ort mit Tablet und Ansprechperson, zum Beispiel im Rathaus, in der Bücherei oder auf dem Wochenmarkt.</p>
+        </details>
+        <details>
+          <summary>Können wir die Plattform auch selbst weiter betreiben?</summary>
+          <p>Ja. Die Software gehört nach der Einrichtung Ihrer Stadt und kann auch für weitere Orte und Fragestellungen genutzt werden.</p>
+        </details>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- KONTAKT -->
-<section id="kontakt" class="section section-cta">
-  <div class="wrap cta-box">
-    <div>
-      <h2>Was wünscht sich Ihre Stadt?</h2>
-      <p class="lead">Erzählen Sie uns von Ihrem Ort. In einem 30-minütigen Gespräch klären wir, ob KI-Oasen passt, und zeigen Ihnen KI-Oasen live.</p>
-    </div>
-    <div class="cta-actions">
-      <a href="mailto:kontakt@ki-oasen.de?subject=Anfrage%20KI-Oasen" class="btn btn-big">kontakt@ki-oasen.de</a>
-      <a href="demo.html" class="link-light">oder erst einmal die Demo ausprobieren →</a>
+<!-- 7 · KONTAKT -->
+<section id="kontakt" class="section">
+  <div class="wrap">
+    <svg class="sk panorama" viewBox="0 0 1200 140" aria-hidden="true">
+      <path d="M0 128 H1200"/>
+      <g class="w">
+        <path d="M40 128 V70 L80 40 L120 70 V128 Z"/>
+        <path d="M120 128 V60 H200 V128 Z"/>
+        <path d="M200 128 V76 L236 50 L272 76 V128 Z"/>
+        <path d="M640 128 V64 H720 V128 Z"/>
+        <path d="M720 128 V58 L760 30 L800 58 V128 Z"/>
+        <path d="M800 128 V72 H880 V128 Z"/>
+        <path d="M960 128 V66 L1000 38 L1040 66 V128 Z"/>
+        <path d="M1040 128 V78 H1110 V128 Z"/>
+        <path d="M1110 128 V62 L1140 44 L1170 62 V128 Z"/>
+      </g>
+      <path d="M62 82 h10 v12 h-10z M88 82 h10 v12 h-10z M74 108 V128 H86 V108 M136 74 h10 v12 h-10z M174 74 h10 v12 h-10z M136 100 h10 v12 h-10z M174 100 h10 v12 h-10z M228 88 h16 v14 h-16z M656 78 h10 v12 h-10z M694 78 h10 v12 h-10z M674 106 V128 H688 V106 M752 70 h16 v14 h-16z M740 98 h10 v12 h-10z M770 98 h10 v12 h-10z M818 86 h10 v12 h-10z M852 86 h10 v12 h-10z M992 78 h16 v14 h-16z M980 104 h10 v12 h-10z M1010 104 h10 v12 h-10z M1060 92 h10 v12 h-10z M1084 92 h10 v12 h-10z M1132 76 h10 v12 h-10z M1134 106 V128 H1146 V106"/>
+      <path d="M330 104 V128 M580 100 V128 M920 108 V128"/>
+      <path class="g" transform="translate(330 88) scale(.85)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+      <path class="g" transform="translate(580 82)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+      <path class="g" transform="translate(920 92) scale(.7)" d="M-30 10 C-46 4 -44 -22 -26 -24 C-24 -42 -2 -46 8 -34 C22 -46 44 -34 38 -16 C52 -8 46 16 30 16 C24 30 0 32 -8 22 C-20 30 -36 24 -30 10 Z"/>
+      <path d="M390 82 V128 M520 72 V128"/>
+      <path class="y" d="M390 82 L520 72 L536 96 L404 104 Z"/>
+      <circle class="w" cx="440" cy="102" r="4"/><path d="M440 106 V116 M440 109 l-5 4 M440 109 l5 4 M440 116 l-4 11 M440 116 l4 11"/>
+      <circle class="w" cx="462" cy="110" r="3"/><path d="M462 113 V119 M462 115 l-6 -3 M462 119 l-3 8 M462 119 l3 8"/>
+      <path d="M600 122 h40 M604 122 v6 M636 122 v6"/>
+    </svg>
+
+    <div class="spread">
+      <div class="pg-l">
+        <div class="opener"><span class="ch-num" aria-hidden="true">7</span><h2 class="ch-title">Was wünscht<br>sich Ihre<br>Stadt?</h2></div>
+      </div>
+      <div class="pg-r">
+        <p class="lead">Erzählen Sie uns von Ihrem Ort. In einem 30-minütigen Gespräch klären wir, ob KI-Oasen passt, und zeigen Ihnen KI-Oasen live.</p>
+        <div class="cta-actions">
+          <a href="mailto:kontakt@ki-oasen.de?subject=Anfrage%20KI-Oasen" class="btn btn-big">kontakt@ki-oasen.de</a>
+          <a href="demo.html" class="link">oder erst einmal die Demo ausprobieren →</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
