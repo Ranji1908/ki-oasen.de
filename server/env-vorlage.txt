@@ -1,0 +1,14 @@
+# Vorlage für die Geheimnis-Datei des Servers.
+# Diese Datei kopieren, die Kopie ".env" nennen (mit Punkt, ohne Endung)
+# und in denselben Ordner "server" legen. Dann die Werte eintragen.
+# Die Datei .env bleibt nur auf diesem Rechner. Nie weitergeben, nie hochladen.
+
+# Schlüssel von https://platform.openai.com/api-keys
+# Leer lassen = die Demo läuft nur im Simulationsmodus (kostenlos).
+OPENAI_API_KEY=
+
+# Passwort für die Admin-Seite http://127.0.0.1:8787/admin
+ADMIN_PASSWORT=
+
+# Optional ein anderer Port
+# PORT=8787

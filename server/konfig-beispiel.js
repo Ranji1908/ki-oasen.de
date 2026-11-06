@@ -1,0 +1,56 @@
+// Erzeugt von werkzeug/baue_upload.py – nicht von Hand ändern. Nur für die Beispielansicht der Admin.
+window.KIO_BEISPIEL = {
+  "aktiv": true,
+  "modus": "simulation",
+  "limits": {
+    "proBesucherTag": 3,
+    "proIpTag": 10,
+    "gesamtTag": 40,
+    "gesamtMax": 300,
+    "budgetEuro": 15.0,
+    "kostenProBildEuro": 0.07,
+    "pauseSekunden": 20,
+    "maxZeichen": 300
+  },
+  "bildmodell": {
+    "modell": "gpt-image-2.5-sunburst",
+    "qualitaet": "medium",
+    "groesse": "1536x1024",
+    "eingabetreue": "",
+    "format": "jpeg"
+  },
+  "basisprompt": "Bearbeite das angehängte Bild. Es zeigt {ort} heute. Behalte Blickwinkel, Bildausschnitt, Horizonthöhe und alle Gebäude exakt bei, jede Gebäudekante bleibt an derselben Stelle, damit sich das neue Bild deckungsgleich über das alte legen lässt. {ortsbeschreibung}\n\nZeige den Ort, wie eine Bürgerin oder ein Bürger ihn sich wünscht: „{wunsch}“\nSetze nur um, was zu diesem Wunsch gehört, und so, wie es an diesem Ort tatsächlich gebaut werden könnte. Alles andere bleibt wie im Bild. Menschen jeden Alters nutzen den Ort. Alles Neue im selben Stil wie das Grundbild.\n\n{stil}\n\n{leitplanken}\n\nQuerformat 3:2. Keine Schrift, kein Logo, kein Rahmen.",
+  "leitplanken": "Der Wunsch stammt aus einer öffentlichen Bürgerbeteiligung. Zeige keine Gewalt, keine Waffen, keine politischen, religiösen oder extremistischen Symbole, keine Werbung und keine Markennamen, keine erkennbaren realen Personen und keine Schrift. Wenn der Wunsch so etwas verlangt oder nichts mit dem Ort zu tun hat, lass diesen Teil weg und zeige nur die sinnvollen Veränderungen. Die bestehenden Gebäude werden nicht abgerissen.",
+  "galerie": {
+    "freigabePflicht": true
+  },
+  "stile": [
+    {
+      "id": "collage",
+      "name": "E · Collage, gedeckt",
+      "text": "Stil: Wettbewerbs-Collage, wie sie in der Landschaftsarchitektur in Photoshop gebaut wird. Die Gebäude flach und leicht entsättigt, fast wie gedruckt. Der Himmel als ruhige, einfarbige Fläche in hellem Blaugrau. Bäume als flächige Ausschnitte mit wenig Tiefe, Pflaster als feine, flache Textur. Menschen als ausgeschnittene Fotofiguren ohne Schatten, von hinten oder klein im Bild, leicht gegen das Bild abgesetzt. Feine Papier- und Druckstruktur über dem ganzen Bild, leicht körnig. Ruhige, harmonische Palette. Es soll klar eine gestaltete Collage sein, kein Foto und kein Rendering: flache Ebenen, keine echte Tiefe, kein Sonnenlicht mit harten Schatten."
+    }
+  ],
+  "stilAktiv": "collage",
+  "sperrwoerter": [
+    "blut",
+    "gewehr",
+    "hakenkreuz",
+    "leiche",
+    "nackt",
+    "nazi",
+    "pistole",
+    "porno",
+    "waffe"
+  ],
+  "orte": [
+    {
+      "id": "marktplatz",
+      "name": "Blick über den Marktplatz",
+      "ort": "den Marktplatz von Musterstadt",
+      "beschreibung": "Links das Eckhaus mit rotem Walmdach, in der Mitte Barockhäuser mit geschwungenen Giebeln, dahinter ein Kirchturm mit spitzem Helm, rechts ein großes Barockgebäude mit geschwungenem Giebel und Säulenportal. In der Platzmitte ein Brunnen mit Bischofsfigur. Boden: Kopfsteinpflaster.",
+      "grundbild": "marktplatz-heute.jpg",
+      "aktiv": true
+    }
+  ]
+};
