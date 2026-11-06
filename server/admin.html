@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>KI-Oasen Admin</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../buch.css">
+<style>
+  body { background: var(--paper); }
+  .a-head { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1.2px solid var(--ink); }
+  .a-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+  .a-head h1 { font-size: 22px; margin: 0; }
+  .a-head h1 em { font-weight: 300; }
+  .a-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .dirty { font-style: italic; font-weight: 300; font-size: 15px; }
+  .btn, button.btn { cursor: pointer; }
+  .btn-ghost { background: var(--paper); }
+  .btn-danger { background: var(--paper); border-color: #A0412D; color: #A0412D; }
+  main.wrap { padding-block: 32px 96px; }
+  section.a { border-top: 1.2px solid var(--ink); padding: 20px 0 40px; display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 16px 40px; }
+  section.a > h2 { font-size: 22px; margin: 0; }
+  section.a > h2 small { display: block; font-size: 15px; font-weight: 300; color: var(--ink-2); margin-top: .4em; line-height: 1.4; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px 24px; }
+  label.f { display: block; font-size: 15px; font-weight: 500; }
+  label.f span { display: block; font-weight: 300; color: var(--ink-2); font-size: 14px; margin-top: 2px; }
+  input[type=text], input[type=number], input[type=password], select, textarea {
+    width: 100%; font: 400 16px/1.4 var(--font); color: var(--ink); background: var(--paper);
+    border: 1px solid var(--ink); border-radius: 0; padding: 8px 10px; margin-top: 6px; }
+  textarea { min-height: 110px; resize: vertical; font-weight: 300; }
+  textarea.lang { min-height: 260px; }
+  .check { display: flex; gap: 10px; align-items: center; font-size: 16px; margin: 4px 0 12px; cursor: pointer; }
+  .check input { width: 18px; height: 18px; accent-color: var(--ink); }
+  .seg { display: inline-flex; border: 1px solid var(--ink); }
+  .seg label { padding: 8px 16px; cursor: pointer; font-size: 16px; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg label:has(input:checked) { background: var(--yellow); font-weight: 500; }
+  .seg label + label { border-left: 1px solid var(--ink); }
+  .karte { border: 1px solid var(--ink); padding: 16px; margin-bottom: 16px; }
+  .karte.aktiv { box-shadow: inset 4px 0 0 var(--yellow); }
+  .karte-kopf { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; }
+  .ort-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; }
+  .ort-grid img { width: 100%; aspect-ratio: 3/2; object-fit: cover; border: 1px solid var(--ink); display: block; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px 24px; margin-bottom: 20px; }
+  .kpi { border-top: 1px solid var(--hair); padding-top: 10px; }
+  .kpi strong { display: block; font-size: 34px; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+  .kpi span { font-size: 14px; color: var(--ink-2); }
+  .meter { height: 6px; background: var(--hair); margin-top: 8px; }
+  .meter div { height: 100%; background: var(--green); }
+  .meter.voll div { background: #A0412D; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  th { font-weight: 500; border-bottom-color: var(--ink); }
+  td.w { max-width: 380px; }
+  .tabelle { max-height: 420px; overflow: auto; border: 1px solid var(--hair); }
+  .erg-ok { color: var(--green); font-weight: 500; }
+  .erg-fehler, .erg-abgelehnt { color: #A0412D; font-weight: 500; }
+  pre.prompt { white-space: pre-wrap; font: 300 15px/1.5 var(--font); background: #F7F6F2; border: 1px solid var(--hair); padding: 14px; margin: 12px 0 0; }
+  .legende code { background: #F7F6F2; border: 1px solid var(--hair); padding: 0 .3em; font-size: 14px; }
+  .hinweis { font-size: 15px; color: var(--ink-2); margin: 8px 0 0; }
+  .meldung { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 18px; font-size: 15px; z-index: 20; max-width: calc(100% - 32px); }
+  .meldung.fehler { background: #A0412D; }
+  .beitrag { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; gap: 16px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--hair); }
+  .beitrag img { width: 100%; aspect-ratio: 3/2; object-fit: cover; border: 1px solid var(--ink); }
+  .badge { display: inline-block; font-size: 13px; border: 1px solid var(--ink); padding: 0 .45em; margin-right: 6px; }
+  .badge.frei { background: var(--green); color: #fff; border-color: var(--green); }
+  .badge.neu { background: var(--yellow); }
+  .login { max-width: 380px; margin: 12vh auto; border: 1.2px solid var(--ink); padding: 32px; }
+  .beispiel { border-left: 4px solid var(--yellow); background: #F7F6F2; padding: 14px 18px; margin: 0 0 28px; font-size: 16px; }
+  .beispiel strong { font-weight: 500; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .compare-stage.foto { aspect-ratio: 3 / 2; }
+  .compare-stage.foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 760px) {
+    section.a { grid-template-columns: minmax(0, 1fr); }
+    .ort-grid, .beitrag { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sichtbar, solange kein Server antwortet (z. B. per Doppelklick geöffnet). Eigene Stile, weil buch.css dann fehlt. -->
+<div id="offline" style="max-width:560px;margin:12vh auto;padding:32px;border:1.2px solid #1A1A1A;font:300 17px/1.5 Barlow,system-ui,sans-serif;color:#1A1A1A;background:#fff">
+  <h1 style="font-size:28px;font-weight:500;margin:0 0 12px">KI-Oasen <em style="font-weight:300">Admin</em></h1>
+  <p id="offlineText" style="margin:0 0 12px">Verbinde mit dem Server …</p>
+  <ol id="offlineSchritte" hidden style="margin:0;padding-left:1.3em">
+    <li>Im Ordner <b>server</b> auf <b>start.command</b> doppelklicken. Das Terminal-Fenster offen lassen.</li>
+    <li>Dann im Browser öffnen: <a href="http://127.0.0.1:8787/admin" style="color:inherit">http://127.0.0.1:8787/admin</a></li>
+  </ol>
+</div>
+
+<div id="login" class="login" hidden>
+  <h1 style="font-size:28px">KI-Oasen <em>Admin</em></h1>
+  <form id="loginForm">
+    <label class="f">Passwort<input type="password" id="pw" autocomplete="current-password" required></label>
+    <p class="hinweis" id="loginInfo"></p>
+    <button class="btn" style="margin-top:16px">Anmelden</button>
+  </form>
+</div>
+
+<div id="app" hidden>
+<header class="a-head">
+  <div class="wrap">
+    <h1>KI-Oasen <em>Admin</em></h1>
+    <div class="a-actions">
+      <span class="dirty" id="dirty" hidden>Ungespeicherte Änderungen</span>
+      <a class="btn btn-ghost btn-small" href="../demo.html" target="_blank" rel="noopener">Demo öffnen</a>
+      <button class="btn btn-small" id="speichern">Speichern</button>
+      <button class="btn btn-ghost btn-small" id="abmelden">Abmelden</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="beispiel" id="beispiel" hidden><strong>Beispielansicht.</strong> So ist die Admin von KI-Oasen aufgebaut, mit den aktuellen Einstellungen aus <code>server/konfig-standard.json</code>. Hier läuft kein Server: Eingaben werden nicht gespeichert, Testbilder und Freigaben sind aus. „Prompt ansehen“ funktioniert und zeigt, wie der Prompt für die KI zusammengesetzt wird.<br>Zur echten Admin: im Ordner <code>server</code> auf <code>start.command</code> doppelklicken, dann http://127.0.0.1:8787/admin öffnen.</p>
+  <section class="a">
+    <h2>Betrieb<small>Was gerade läuft.</small></h2>
+    <div>
+      <label class="check"><input type="checkbox" id="aktiv"> Demo ist für Besucher freigeschaltet</label>
+      <p style="margin:8px 0 6px;font-weight:500">Modus</p>
+      <div class="seg" role="radiogroup">
+        <label><input type="radio" name="modus" value="simulation"> Simulation</label>
+        <label><input type="radio" name="modus" value="live"> Live (echte API, kostet)</label>
+      </div>
+      <p class="hinweis" id="schluesselInfo"></p>
+      <label class="check" style="margin-top:16px"><input type="checkbox" id="freigabe"> Beiträge erst nach Freigabe in der Galerie zeigen</label>
+    </div>
+  </section>
+
+  <section class="a">
+    <h2>Nutzung<small>Aktualisiert sich alle 15 Sekunden.</small></h2>
+    <div>
+      <div class="kpis" id="kpis"></div>
+      <div class="a-actions" style="margin-bottom:16px">
+        <button class="btn btn-ghost btn-small" id="resetHeute">Zähler heute zurücksetzen</button>
+        <button class="btn btn-danger btn-small" id="resetAlles">Alle Zähler und Kosten zurücksetzen</button>
+      </div>
+      <div class="tabelle"><table><thead><tr><th>Zeit</th><th>Wunsch</th><th>Modus</th><th>Ergebnis</th><th>s</th></tr></thead><tbody id="protokoll"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="a">
+    <h2>Limits<small>Greifen pro Demo-Nutzung. 0 sperrt.</small></h2>
+    <div class="grid2">
+      <label class="f">Bilder pro Besucher und Tag<span>über ein Cookie im Browser</span><input type="number" min="0" data-l="proBesucherTag"></label>
+      <label class="f">Bilder pro Anschluss und Tag<span>gleiche IP-Adresse, z. B. Rathaus-WLAN</span><input type="number" min="0" data-l="proIpTag"></label>
+      <label class="f">Bilder pro Tag insgesamt<span>alle Besucher zusammen</span><input type="number" min="0" data-l="gesamtTag"></label>
+      <label class="f">Bilder insgesamt<span>harte Obergrenze</span><input type="number" min="0" data-l="gesamtMax"></label>
+      <label class="f">Budget in Euro<span>Live-Modus stoppt, wenn erreicht</span><input type="number" min="0" step="0.5" data-l="budgetEuro"></label>
+      <label class="f">Kosten pro Bild in Euro<span>Schätzwert für die Budgetrechnung</span><input type="number" min="0" step="0.01" data-l="kostenProBildEuro"></label>
+      <label class="f">Pause zwischen zwei Bildern<span>Sekunden pro Besucher</span><input type="number" min="0" data-l="pauseSekunden"></label>
+      <label class="f">Wunsch höchstens<span>Zeichen</span><input type="number" min="20" data-l="maxZeichen"></label>
+    </div>
+  </section>
+
+  <section class="a">
+    <h2>Basisprompt<small>Wird für jedes Bild zusammengesetzt.</small></h2>
+    <div>
+      <p class="legende hinweis" style="margin:0 0 4px">Platzhalter: <code>{wunsch}</code> Text des Besuchers · <code>{ort}</code> Ortsbezeichnung · <code>{ortsbeschreibung}</code> · <code>{stil}</code> aktives Stilmittel · <code>{leitplanken}</code></p>
+      <textarea class="lang" id="basisprompt"></textarea>
+      <label class="f" style="margin-top:20px">Leitplanken<span>Was nie im Bild erscheinen soll und wie mit unpassenden Wünschen umzugehen ist.</span><textarea id="leitplanken"></textarea></label>
+      <label class="f" style="margin-top:20px">Sperrwörter<span>Eins pro Zeile. Wünsche mit diesen Wörtern werden vor dem API-Aufruf abgelehnt (spart Kosten).</span><textarea id="sperrwoerter"></textarea></label>
+    </div>
+  </section>
+
+  <section class="a">
+    <h2>Stilmittel<small>Der aktive Stil ersetzt <code>{stil}</code>. Text wortgleich zum Grundbild-Prompt halten.</small></h2>
+    <div><div id="stile"></div><button class="btn btn-ghost btn-small" id="stilNeu">+ Stil hinzufügen</button></div>
+  </section>
+
+  <section class="a">
+    <h2>Orte<small>Blickwinkel zur Auswahl in Schritt 2. Grundbilder liegen in <code>bilder/grundbilder/</code>.</small></h2>
+    <div><div id="orte"></div><button class="btn btn-ghost btn-small" id="ortNeu">+ Ort hinzufügen</button></div>
+  </section>
+
+  <section class="a">
+    <h2>Bildmodell<small>OpenAI-Bildbearbeitung.</small></h2>
+    <div class="grid2">
+      <label class="f">Modell<input type="text" id="modell"></label>
+      <label class="f">Qualität<span>low ≈ 2 ct · medium ≈ 6 ct · high ≈ 25 ct pro Bild</span><select id="qualitaet"><option>low</option><option>medium</option><option>high</option><option>auto</option></select></label>
+      <label class="f">Größe<select id="groesse"><option>1536x1024</option><option>1024x1024</option><option>1024x1536</option><option>auto</option></select></label>
+      <label class="f">Eingabetreue<span>high hält Gebäude genauer, kostet etwas mehr</span><select id="eingabetreue"><option value="high">high</option><option value="low">low</option><option value="">nicht senden</option></select></label>
+      <label class="f">Dateiformat<select id="format"><option>jpeg</option><option>webp</option><option>png</option></select></label>
+    </div>
+  </section>
+
+  <section class="a">
+    <h2>Ausprobieren<small>Nutzt die gespeicherte Einstellung. Testbilder zählen zum Gesamt-Kontingent, nicht zum Besucher-Limit.</small></h2>
+    <div>
+      <div class="grid2">
+        <label class="f">Ort<select id="testOrt"></select></label>
+        <label class="f" style="grid-column: span 2">Testwunsch<input type="text" id="testWunsch" value="Mehr Bäume, Schatten, ein Wasserspiel für Kinder und Bänke zum Sitzen"></label>
+      </div>
+      <div class="a-actions" style="margin-top:14px">
+        <button class="btn btn-ghost btn-small" id="vorschau">Prompt ansehen</button>
+        <button class="btn btn-small" id="testbild">Testbild erzeugen</button>
+      </div>
+      <pre class="prompt" id="promptAusgabe" hidden></pre>
+      <figure class="compare" id="testErgebnis" hidden style="margin-top:16px;max-width:760px"></figure>
+    </div>
+  </section>
+
+  <section class="a">
+    <h2>Beiträge<small>Eingereichte Wünsche aus der Demo.</small></h2>
+    <div id="beitraege"></div>
+  </section>
+
+  <section class="a">
+    <h2>Zurücksetzen<small>Alle Einstellungen auf den Auslieferungsstand.</small></h2>
+    <div><button class="btn btn-danger btn-small" id="standard">Einstellungen auf Standard</button>
+      <p class="hinweis">Die bisherige Einstellung wird als <code>daten/konfig.json.vorher</code> aufgehoben.</p></div>
+  </section>
+</main>
+</div>
+
+<!-- Einstellungen für die Beispielansicht, auch per Doppelklick lesbar (erzeugt von werkzeug/baue_upload.py). Fehlt sie, wird konfig-standard.json geladen. -->
+<script src="konfig-beispiel.js"></script>
+<script>
+(function () {
+  var K = null, BILDER = [], dirty = false;
+  // Relativ zur Website-Wurzel: lokal läuft die Seite unter /admin oder /server/admin.html,
+  // online unter …/buchstil/server/admin.html. In allen Fällen zeigt ../ auf die Wurzel.
+  var W = '../';
+  var BEISPIEL = false;   // true, wenn kein Server da ist (z. B. GitHub Pages)
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function melde(text, fehler) {
+    var m = document.createElement('div'); m.className = 'meldung' + (fehler ? ' fehler' : ''); m.textContent = text;
+    document.body.appendChild(m); setTimeout(function () { m.remove(); }, fehler ? 6000 : 2500);
+  }
+  function api(methode, url, daten) {
+    return fetch(W + url.replace(/^\//, ''), { method: methode, credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'X-KIO': '1' },
+      body: daten ? JSON.stringify(daten) : undefined
+    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j._status = r.status; return j; }); });
+  }
+  function setDirty(v) { if (BEISPIEL) return; dirty = v; $('#dirty').hidden = !v; }
+  window.addEventListener('beforeunload', function (e) { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+  // ---------- Anmeldung ----------
+  function offline(text) {
+    $('#offline').hidden = false; $('#login').hidden = true; $('#app').hidden = true;
+    $('#offlineText').textContent = text; $('#offlineSchritte').hidden = false;
+  }
+  function start() {
+    if (location.protocol === 'file:') {
+      if (window.KIO_BEISPIEL) return beispiel('Datei');
+      return offline('Diese Seite funktioniert nur über den lokalen Server, nicht per Doppelklick.');
+    }
+    api('GET', '/api/admin/konfig').then(function (j) {
+      $('#offline').hidden = true;
+      if (j._status === 401 || j._status === 503) {
+        $('#login').hidden = false; $('#app').hidden = true;
+        $('#loginInfo').textContent = j._status === 503 ? j.fehler : '';
+        $('#pw').disabled = j._status === 503;
+        return;
+      }
+      if (j._status !== 200 || !j.konfig) return beispiel(j._status);
+      $('#login').hidden = true; $('#app').hidden = false;
+      K = j.konfig; BILDER = j.grundbilder;
+      $('#schluesselInfo').textContent = j.schluessel
+        ? 'API-Schlüssel ist hinterlegt.'
+        : 'Kein API-Schlüssel in server/.env – Live-Modus liefert Fehler, Simulation geht.';
+      fuelle(); ladeNutzung(); ladeBeitraege();
+    }).catch(function () {
+      offline('Der Server antwortet nicht. Läuft das Terminal-Fenster von start.command noch?');
+    });
+  }
+  // Ohne Server (statisches Hosting): Einstellungen aus der Standarddatei nur zum Ansehen zeigen.
+  function beispiel(status) {
+    (window.KIO_BEISPIEL ? Promise.resolve(window.KIO_BEISPIEL) : fetch('konfig-standard.json', { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('fehlt'); return r.json();
+    })).then(function (k) {
+      BEISPIEL = true; K = k;
+      BILDER = k.orte.map(function (o) { return o.grundbild; }).filter(function (b, i, a) { return b && a.indexOf(b) === i; });
+      $('#offline').hidden = true; $('#login').hidden = true; $('#app').hidden = false; $('#beispiel').hidden = false;
+      document.title = 'KI-Oasen Admin · Beispielansicht';
+      $('#schluesselInfo').textContent = 'Beispielansicht: Den Modus stellt man mit dem lokalen Server um.';
+      ['#speichern', '#resetHeute', '#resetAlles', '#testbild', '#standard'].forEach(function (s) {
+        $(s).disabled = true; $(s).title = 'Nur mit dem lokalen Server';
+      });
+      $('#abmelden').style.display = 'none';   // .btn setzt display, darum nicht über hidden
+      fuelle();
+      $('#kpis').innerHTML = kpi('–', 'Bilder heute') + kpi('–', 'Bilder insgesamt') + kpi('–', 'Budget') + kpi('–', 'Besucher heute');
+      $('#protokoll').innerHTML = '<tr><td colspan="5">In der Beispielansicht gibt es keine Nutzungsdaten. Lokal steht hier jede Anfrage mit Ergebnis und Dauer.</td></tr>';
+      $('#beitraege').innerHTML = '<p class="hinweis" style="margin:0">In der Beispielansicht gibt es keine Beiträge. Lokal erscheinen hier eingereichte Wünsche zum Freigeben oder Ausblenden.</p>';
+    }).catch(function () {
+      offline('Unter dieser Adresse läuft nicht der KI-Oasen-Server (Antwort ' + status + ').');
+    });
+  }
+  // Nachbau von baue_prompt() aus server.py, damit „Prompt ansehen“ auch ohne Server geht.
+  function baueLokal(k, ortId, wunsch) {
+    var ort = k.orte.filter(function (o) { return o.id === ortId; })[0] || k.orte[0];
+    var stil = k.stile.filter(function (s) { return s.id === k.stilAktiv; })[0] || k.stile[0];
+    wunsch = String(wunsch).replace(/[\x00-\x1f\x7f]/g, ' ').replace(/[{}<>\[\]"„“”«»]/g, '').replace(/\s+/g, ' ').trim()
+      .slice(0, (k.limits && +k.limits.maxZeichen) || 300) || '…';
+    var werte = { ort: ort.ort, ortsbeschreibung: ort.beschreibung || '', wunsch: wunsch, stil: stil.text, leitplanken: k.leitplanken || '' };
+    return k.basisprompt.replace(/\{(\w+)\}/g, function (m, n) { return n in werte ? werte[n] : m; }).replace(/\n{3,}/g, '\n\n').trim();
+  }
+  $('#loginForm').onsubmit = function (e) {
+    e.preventDefault();
+    api('POST', '/api/admin/anmelden', { passwort: $('#pw').value }).then(function (j) {
+      if (j.ok) { $('#pw').value = ''; start(); } else $('#loginInfo').textContent = j.fehler || 'Fehler';
+    });
+  };
+  $('#abmelden').onclick = function () { api('POST', '/api/admin/abmelden', {}).then(function () { setDirty(false); location.reload(); }); };
+
+  // ---------- Formular füllen ----------
+  function fuelle() {
+    $('#aktiv').checked = K.aktiv;
+    $$('input[name=modus]').forEach(function (r) { r.checked = r.value === K.modus; });
+    $('#freigabe').checked = K.galerie.freigabePflicht;
+    $$('[data-l]').forEach(function (i) { i.value = K.limits[i.dataset.l]; });
+    $('#basisprompt').value = K.basisprompt;
+    $('#leitplanken').value = K.leitplanken;
+    $('#sperrwoerter').value = K.sperrwoerter.join('\n');
+    ['modell', 'qualitaet', 'groesse', 'eingabetreue', 'format'].forEach(function (id) { $('#' + id).value = K.bildmodell[id]; });
+    zeichneStile(); zeichneOrte(); setDirty(false);
+  }
+
+  function zeichneStile() {
+    $('#stile').innerHTML = K.stile.map(function (s, i) {
+      var an = s.id === K.stilAktiv;
+      return '<div class="karte' + (an ? ' aktiv' : '') + '" data-i="' + i + '">' +
+        '<div class="karte-kopf"><label class="check" style="margin:0"><input type="radio" name="stilAktiv" value="' + esc(s.id) + '"' + (an ? ' checked' : '') + '> aktiv</label>' +
+        '<button class="btn btn-ghost btn-small" data-weg="' + i + '">Entfernen</button></div>' +
+        '<div class="grid2"><label class="f">Name<input type="text" data-s="name" value="' + esc(s.name) + '"></label>' +
+        '<label class="f">Kürzel<span>a–z, 0–9, -</span><input type="text" data-s="id" value="' + esc(s.id) + '"></label></div>' +
+        '<label class="f" style="margin-top:12px">Stiltext<textarea data-s="text">' + esc(s.text) + '</textarea></label></div>';
+    }).join('');
+  }
+  function liesStile() {
+    var alt = K.stilAktiv, gewaehlt = $('input[name=stilAktiv]:checked');
+    K.stile = $$('#stile .karte').map(function (k) {
+      return { name: k.querySelector('[data-s=name]').value, id: k.querySelector('[data-s=id]').value.trim(), text: k.querySelector('[data-s=text]').value };
+    });
+    if (gewaehlt) K.stilAktiv = K.stile[+gewaehlt.closest('.karte').dataset.i].id; else K.stilAktiv = alt;
+  }
+  $('#stile').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-weg]'); if (!b) return;
+    liesStile(); if (K.stile.length < 2) return melde('Mindestens ein Stil muss bleiben.', true);
+    var weg = K.stile.splice(+b.dataset.weg, 1)[0];
+    if (weg.id === K.stilAktiv) K.stilAktiv = K.stile[0].id;
+    zeichneStile(); setDirty(true);
+  });
+  $('#stile').addEventListener('change', function (e) {
+    if (e.target.name === 'stilAktiv') { liesStile(); zeichneStile(); setDirty(true); }
+  });
+  $('#stilNeu').onclick = function () {
+    liesStile(); K.stile.push({ id: 'stil-' + (K.stile.length + 1), name: 'Neuer Stil', text: 'Stil: …' }); zeichneStile(); setDirty(true);
+  };
+
+  function zeichneOrte() {
+    var opts = function (wahl) { return BILDER.map(function (b) { return '<option' + (b === wahl ? ' selected' : '') + '>' + esc(b) + '</option>'; }).join(''); };
+    $('#orte').innerHTML = K.orte.map(function (o, i) {
+      return '<div class="karte' + (o.aktiv ? ' aktiv' : '') + '" data-i="' + i + '"><div class="ort-grid">' +
+        '<div><img alt="" src="' + W + 'bilder/grundbilder/' + encodeURIComponent(o.grundbild) + '">' +
+        '<label class="f" style="margin-top:8px">Grundbild<select data-o="grundbild">' + opts(o.grundbild) + '</select></label></div>' +
+        '<div><div class="karte-kopf"><label class="check" style="margin:0"><input type="checkbox" data-o="aktiv"' + (o.aktiv ? ' checked' : '') + '> in der Demo zeigen</label>' +
+        '<button class="btn btn-ghost btn-small" data-weg="' + i + '">Entfernen</button></div>' +
+        '<div class="grid2"><label class="f">Name in der Demo<input type="text" data-o="name" value="' + esc(o.name) + '"></label>' +
+        '<label class="f">Kürzel<input type="text" data-o="id" value="' + esc(o.id) + '"></label></div>' +
+        '<label class="f" style="margin-top:12px">Ortsbezeichnung für {ort}<input type="text" data-o="ort" value="' + esc(o.ort) + '"></label>' +
+        '<label class="f" style="margin-top:12px">Ortsbeschreibung für {ortsbeschreibung}<span>Gebäude so beschreiben, dass die KI sie wiedererkennt.</span><textarea data-o="beschreibung">' + esc(o.beschreibung) + '</textarea></label>' +
+        '</div></div></div>';
+    }).join('');
+    $('#testOrt').innerHTML = K.orte.map(function (o) { return '<option value="' + esc(o.id) + '">' + esc(o.name) + '</option>'; }).join('');
+  }
+  function liesOrte() {
+    K.orte = $$('#orte .karte').map(function (k) {
+      var w = function (n) { return k.querySelector('[data-o=' + n + ']'); };
+      return { id: w('id').value.trim(), name: w('name').value, ort: w('ort').value, beschreibung: w('beschreibung').value, grundbild: w('grundbild').value, aktiv: w('aktiv').checked };
+    });
+  }
+  $('#orte').addEventListener('change', function (e) {
+    if (e.target.dataset.o === 'grundbild') e.target.closest('.karte').querySelector('img').src = W + 'bilder/grundbilder/' + encodeURIComponent(e.target.value);
+  });
+  $('#orte').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-weg]'); if (!b) return;
+    liesOrte(); if (K.orte.length < 2) return melde('Mindestens ein Ort muss bleiben.', true);
+    K.orte.splice(+b.dataset.weg, 1); zeichneOrte(); setDirty(true);
+  });
+  $('#ortNeu').onclick = function () {
+    liesOrte(); K.orte.push({ id: 'ort-' + (K.orte.length + 1), name: 'Neuer Blickwinkel', ort: 'den Platz', beschreibung: '', grundbild: BILDER[0] || '', aktiv: false });
+    zeichneOrte(); setDirty(true);
+  };
+
+  document.addEventListener('input', function (e) { if (e.target.closest('main') && !e.target.closest('#testErgebnis') && e.target.id !== 'testWunsch' && e.target.id !== 'testOrt') setDirty(true); });
+  document.addEventListener('change', function (e) { if (e.target.closest('main') && e.target.id !== 'testOrt') setDirty(true); });
+
+  // ---------- Speichern ----------
+  function sammle() {
+    liesStile(); liesOrte();
+    var lim = {}; $$('[data-l]').forEach(function (i) { lim[i.dataset.l] = i.value; });
+    return {
+      aktiv: $('#aktiv').checked, modus: ($('input[name=modus]:checked') || {}).value,
+      limits: lim, basisprompt: $('#basisprompt').value, leitplanken: $('#leitplanken').value,
+      sperrwoerter: $('#sperrwoerter').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
+      stile: K.stile, stilAktiv: K.stilAktiv, orte: K.orte,
+      bildmodell: { modell: $('#modell').value.trim(), qualitaet: $('#qualitaet').value, groesse: $('#groesse').value, eingabetreue: $('#eingabetreue').value, format: $('#format').value },
+      galerie: { freigabePflicht: $('#freigabe').checked }
+    };
+  }
+  function speichern() {
+    if (BEISPIEL) { melde('Beispielansicht: Speichern geht nur mit dem lokalen Server.', true); return Promise.resolve(false); }
+    return api('PUT', '/api/admin/konfig', sammle()).then(function (j) {
+      if (j.ok) { K = j.konfig; fuelle(); ladeNutzung(); melde('Gespeichert.'); return true; }
+      if (j._status === 401) { start(); return false; }
+      melde(j.fehler || 'Speichern fehlgeschlagen.', true); return false;
+    });
+  }
+  $('#speichern').onclick = speichern;
+  document.addEventListener('keydown', function (e) { if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); speichern(); } });
+  $('#standard').onclick = function () {
+    if (!confirm('Alle Einstellungen auf den Auslieferungsstand zurücksetzen?')) return;
+    api('POST', '/api/admin/standard', {}).then(function (j) { if (j.ok) { K = j.konfig; fuelle(); melde('Standard wiederhergestellt.'); } });
+  };
+
+  // ---------- Nutzung ----------
+  function kpi(wert, label, anteil) {
+    var m = anteil == null ? '' : '<div class="meter' + (anteil >= 1 ? ' voll' : '') + '"><div style="width:' + Math.min(100, anteil * 100) + '%"></div></div>';
+    return '<div class="kpi"><strong>' + wert + '</strong><span>' + label + '</span>' + m + '</div>';
+  }
+  function ladeNutzung() {
+    api('GET', '/api/admin/nutzung').then(function (j) {
+      if (j._status !== 200) return;
+      var l = j.limits, h = j.heute, g = j.gesamt, eur = function (x) { return x.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; };
+      $('#kpis').innerHTML =
+        kpi(h.bilder + ' / ' + l.gesamtTag, 'Bilder heute', l.gesamtTag ? h.bilder / l.gesamtTag : 1) +
+        kpi(g.bilder + ' / ' + l.gesamtMax, 'Bilder insgesamt', l.gesamtMax ? g.bilder / l.gesamtMax : 1) +
+        kpi(eur(g.kosten), 'von ' + eur(l.budgetEuro) + ' Budget', l.budgetEuro ? g.kosten / l.budgetEuro : 1) +
+        kpi(h.besucher, 'Besucher heute') +
+        kpi(h.fehler + ' · ' + h.abgelehnt, 'Fehler · abgelehnt heute');
+      $('#protokoll').innerHTML = j.protokoll.slice(0, 80).map(function (p) {
+        var bild = p.bild ? ' <a href="' + W + 'api/bilder/' + encodeURIComponent(p.bild) + '" target="_blank" rel="noopener">Bild</a>' : '';
+        return '<tr><td>' + esc((p.zeit || '').replace('T', ' ').slice(5, 16)) + '</td><td class="w">' + esc(p.wunsch) + (p.admin ? ' <em>(Test)</em>' : '') + '</td><td>' + esc(p.modus) + '</td>' +
+          '<td class="erg-' + esc(p.ergebnis) + '">' + esc(p.ergebnis) + bild + (p.grund ? '<br><small>' + esc(p.grund) + '</small>' : '') + '</td><td>' + esc(p.dauer == null ? '' : p.dauer) + '</td></tr>';
+      }).join('') || '<tr><td colspan="5">Noch keine Anfragen.</td></tr>';
+    });
+  }
+  setInterval(function () { if (!$('#app').hidden && !BEISPIEL) ladeNutzung(); }, 15000);
+  $('#resetHeute').onclick = function () { if (confirm('Zähler von heute zurücksetzen?')) api('POST', '/api/admin/zuruecksetzen', { bereich: 'heute' }).then(ladeNutzung); };
+  $('#resetAlles').onclick = function () { if (confirm('Alle Zähler, Kosten und das Protokoll löschen?')) api('POST', '/api/admin/zuruecksetzen', { bereich: 'alles' }).then(ladeNutzung); };
+
+  // ---------- Ausprobieren ----------
+  $('#vorschau').onclick = function () {
+    if (BEISPIEL) {   // mit den Werten, die gerade im Formular stehen
+      $('#promptAusgabe').hidden = false; $('#promptAusgabe').textContent = baueLokal(sammle(), $('#testOrt').value, $('#testWunsch').value);
+      return;
+    }
+    api('POST', '/api/admin/vorschau', { ort: $('#testOrt').value, wunsch: $('#testWunsch').value }).then(function (j) {
+      $('#promptAusgabe').hidden = false; $('#promptAusgabe').textContent = j.prompt || j.fehler || '';
+    });
+  };
+  $('#testbild').onclick = function () {
+    var los = function () {
+      var b = $('#testbild'); b.disabled = true; b.textContent = 'Wird erzeugt …';
+      api('POST', '/api/admin/testbild', { ort: $('#testOrt').value, wunsch: $('#testWunsch').value }).then(function (j) {
+        b.disabled = false; b.textContent = 'Testbild erzeugen'; ladeNutzung();
+        if (j._status !== 200) return melde(j.fehler || 'Fehler', true);
+        var f = $('#testErgebnis'); f.hidden = false;
+        var nach = j.simulation ? '<img src="' + W + esc(j.grundbild) + '" alt="" style="filter:hue-rotate(40deg) saturate(1.6)">' : '<img src="' + W + esc(j.bild) + '" alt="">';
+        f.innerHTML = '<div class="compare-stage foto" style="--pos:50%"><img src="' + W + esc(j.grundbild) + '" alt=""><div class="after">' + nach + '</div>' +
+          '<div class="compare-handle" aria-hidden="true"><span>⇆</span></div><span class="tag tag-l">Grundbild</span><span class="tag tag-r">' + (j.simulation ? 'Simulation' : 'Ergebnis') + '</span>' +
+          '<input type="range" min="0" max="100" value="50" class="compare-range" aria-label="Vergleich"></div>';
+        var st = f.querySelector('.compare-stage');
+        f.querySelector('input').addEventListener('input', function () { st.style.setProperty('--pos', this.value + '%'); });
+      });
+    };
+    if (dirty) { if (confirm('Erst speichern? Das Testbild nutzt die gespeicherte Einstellung.')) speichern().then(function (ok) { if (ok) los(); }); }
+    else los();
+  };
+
+  // ---------- Beiträge ----------
+  function ladeBeitraege() {
+    api('GET', '/api/admin/beitraege').then(function (j) {
+      if (j._status !== 200) return;
+      var liste = j.beitraege.slice().reverse();
+      $('#beitraege').innerHTML = liste.map(function (b) {
+        var bild = b.bild || b.grundbild;
+        return '<div class="beitrag"><img alt="" src="' + W + esc(bild) + '">' +
+          '<div><span class="badge ' + esc(b.status) + '">' + ({ neu: 'wartet', frei: 'freigegeben', aus: 'ausgeblendet' }[b.status] || esc(b.status)) + '</span>' +
+          '<small>' + esc((b.zeit || '').replace('T', ' ').slice(0, 16)) + ' · ' + esc(b.ort) + ' · ' + esc(b.alter || '–') + ' · ' + esc(b.bezug || '–') + '</small>' +
+          '<p style="margin:6px 0 0">„' + esc(b.wunsch) + '“</p></div>' +
+          '<div class="a-actions"><button class="btn btn-small" data-b="' + esc(b.id) + '" data-s="frei">Freigeben</button>' +
+          '<button class="btn btn-ghost btn-small" data-b="' + esc(b.id) + '" data-s="aus">Ausblenden</button></div></div>';
+      }).join('') || '<p class="hinweis" style="margin:0">Noch keine Beiträge.</p>';
+    });
+  }
+  $('#beitraege').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-b]'); if (!b) return;
+    api('POST', '/api/admin/beitrag', { id: b.dataset.b, status: b.dataset.s }).then(ladeBeitraege);
+  });
+
+  start();
+})();
+</script>
+</body>
+</html>
